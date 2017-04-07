@@ -1,0 +1,3 @@
+rootProject.name = 'spotqueueRN'
+
+include ':app'

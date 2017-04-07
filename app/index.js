@@ -6,21 +6,22 @@ import {
 } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import NowPlaying from './layouts/NowPlaying'
-import ProfilePage from './layouts/ProfilePage'
+import ProfilePage from './layouts/UserPage'
 import StationPage from './layouts/Stations'
 import SearchPage from './layouts/Search'
 import styles from './config/styles'
+import IconTabBar from './layouts/IconTabBar'
 
 export default class spotqueueRN extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar/>
-        <ScrollableTabView tabBarPosition="bottom" style={ styles.container }>
-          <NowPlaying tabLabel="Now Playing"/>
-          <SearchPage tabLabel="Search"/>
-          <StationPage tabLabel="Stations"/>
-          <ProfilePage tabLabel="Profile"/>
+        <ScrollableTabView tabBarPosition="top" style={ styles.container } renderTabBar={() => <IconTabBar/>}>
+          <NowPlaying tabLabel="play"/>
+          <SearchPage tabLabel="search"/>
+          <StationPage tabLabel="list"/>
+          <ProfilePage tabLabel="user"/>
         </ScrollableTabView>
       </View>
     );

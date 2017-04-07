@@ -18,16 +18,3 @@ target 'spotqueueRN' do
   end
 
 end
-
-target 'spotqueueRN-tvOS' do
-  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
-  # use_frameworks!
-
-  # Pods for spotqueueRN-tvOS
-
-  target 'spotqueueRN-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end

@@ -34,12 +34,15 @@ export default class SettingsPage extends React.Component {
 
   constructor (props) {
     super(props)
-    this.state = store.getState()
+    this.state = this.select(store.getState())
   }
 
-  select(state) {
+  select(storedState) {
+    // cache the edited User as a separate object, otherwise edits will
+    // spread on the client side
     return {
-      user: state.user
+      user: storedState.user,
+      editedUser: Object.assign({}, storedState.user)
     }
   }
 
@@ -63,21 +66,28 @@ export default class SettingsPage extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(user)
-      }).then((res) => {
+      })
+      .then((res) => {
+        return res.json()
+      })
+      .then((resJson) => {
         store.dispatch({
           type: 'USER_EXISTS',
-          user: res
+          user: resJson
         })
       })
     }
   }
 
+  // function used to change the value in the state (this is what
+  // appears in each of the settingsRows). Otherwise, will revert
+  // to originial inputValue
   updateUserField = (field) => {
     updateField = (text) => {
-      let updatedUser = this.state.user
+      let updatedUser = this.state.editedUser
       updatedUser[field] = text
       this.setState({
-        user: updatedUser
+        editedUser: updatedUser
       })
     }
     return updateField
@@ -92,10 +102,10 @@ export default class SettingsPage extends React.Component {
         } title="Back" color="transparent"></WideButton>
         <View style={styles.hr}></View>
         <SettingsRow editable={false} inputName="Username" inputValue={ this.state.user.username } inputChange={ this.updateUserField('username') }/>
-        <SettingsRow inputName='First Name' inputValue={ this.state.user.firstName } inputChange={ this.updateUserField('firstName') }/>
-        <SettingsRow inputName='Last Name' inputValue={ this.state.user.lastName } inputChange={ this.updateUserField('lastName') }/>
-        <SettingsRow multiline={true} inputName='Bio' inputValue={ this.state.user.bio } inputChange={ this.updateUserField('bio') }/>
-        <WideButton style={ styles.wideButton } onPress={ this.save(this.state.user) } title="Save Changes" color="transparent"></WideButton>
+        <SettingsRow inputName='First Name' inputValue={ this.state.editedUser.firstName } inputChange={ this.updateUserField('firstName') }/>
+        <SettingsRow inputName='Last Name' inputValue={ this.state.editedUser.lastName } inputChange={ this.updateUserField('lastName') }/>
+        <SettingsRow multiline={true} inputName='Bio' inputValue={ this.state.editedUser.bio } inputChange={ this.updateUserField('bio') }/>
+        <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title="Save Changes" color="transparent"></WideButton>
       </ScrollView>
     )
   }

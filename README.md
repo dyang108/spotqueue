@@ -2,8 +2,8 @@
 
 Private radio stations to listen together even when afar.
 
-Built using React Native, NodeJS, Express, MongoDB
-Will use: Redux, maybe SocketIO
+Built using React Native, Redux, NodeJS, Express, MongoDB, Mongoose
+Will use: SocketIO
 
 ## Contributing
 ### Clone repo

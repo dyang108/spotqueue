@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Text,
   View,
   Image,
   ScrollView
-} from 'react-native';
+} from 'react-native'
 import { connect } from 'react-redux'
 import store from 'src/store'
-import styles from 'src/config/styles';
+import styles from 'src/config/styles'
 import WideButton from 'src/components/WideButton'
 
 
@@ -17,13 +17,13 @@ class ProfilePage extends Component {
   }
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = store.getState()
   }
 
-  select(state) {
+  select(storedState) {
     return {
-      user: state.user
+      user: storedState.user
     }
   }
 
@@ -63,11 +63,5 @@ class ProfilePage extends Component {
   }
 
 }
-
-// const mapStateToProps = function (store) {
-//   return {
-//     user: store.userState
-//   }
-// }
 
 export default ProfilePage

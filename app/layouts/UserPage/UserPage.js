@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   Navigator
-} from 'react-native';
+} from 'react-native'
 import { connect } from 'react-redux'
 import store from 'src/store'
 import ProfilePage from './ProfilePage'
@@ -10,7 +10,7 @@ import WideButton from 'src/components/WideButton'
 
 class UserPage extends Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
 
   render() {
@@ -39,9 +39,9 @@ class UserPage extends Component {
         store.dispatch({
           type: 'USER_EXISTS',
           user: response
-        });
+        })
       })
-      .done();
+      .done()
   }
 }
 

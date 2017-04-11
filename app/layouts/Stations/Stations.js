@@ -3,7 +3,7 @@ import {
   Text,
   View
 } from 'react-native';
-import styles from '../../config/styles'
+import styles from 'src/config/styles'
 
 
 export default class Stations extends Component {

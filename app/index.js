@@ -2,8 +2,12 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  StatusBar
+  StatusBar,
 } from 'react-native';
+import {
+  Provider
+} from 'react-redux'
+import store from './store'
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 import NowPlaying from './layouts/NowPlaying'
 import ProfilePage from './layouts/UserPage'
@@ -15,6 +19,7 @@ import IconTabBar from './layouts/IconTabBar'
 export default class spotqueueRN extends Component {
   render() {
     return (
+      <Provider store={ store }>
       <View style={{ flex: 1 }}>
         <StatusBar/>
         <ScrollableTabView tabBarPosition="top" style={ styles.container } renderTabBar={() => <IconTabBar/>}>
@@ -24,6 +29,7 @@ export default class spotqueueRN extends Component {
           <ProfilePage tabLabel="user"/>
         </ScrollableTabView>
       </View>
+      </Provider>
     );
   }
 }

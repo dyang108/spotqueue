@@ -12,16 +12,18 @@
     "express": "^4.15.2",
     "http": "0.0.0",
     "mongodb": "^2.2.25",
+    "mongoose": "^4.9.4",
     "react": "15.4.2",
     "react-native": "0.42.3",
     "react-native-scrollable-tab-view": "^0.7.3",
     "react-native-vector-icons": "^4.0.1",
     "react-navigation": "^1.0.0-beta.7",
+    "react-redux": "^5.0.4",
+    "redux": "^3.6.0",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
     "babel-jest": "19.0.0",
-    "babel-preset-react-native": "1.9.1",
     "jest": "19.0.2",
     "react-test-renderer": "15.4.2"
   },

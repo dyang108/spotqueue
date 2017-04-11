@@ -3,7 +3,7 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import styles from '../../config/styles'
+import styles from 'src/config/styles'
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 

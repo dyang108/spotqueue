@@ -1,20 +1,18 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Text,
-  View,
-  Image,
-  ScrollView,
-  Button,
   Navigator
 } from 'react-native';
-import styles from '../../config/styles';
+import { connect } from 'react-redux'
+import store from 'src/store'
 import ProfilePage from './ProfilePage'
+import SettingsPage from './SettingsPage'
+import WideButton from 'src/components/WideButton'
 
-export default class UserPage extends Component {
+class UserPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
+
   render() {
     return (
       <Navigator
@@ -25,17 +23,32 @@ export default class UserPage extends Component {
       />
     )
   }
-  renderScene(route, nav) {
+
+  renderScene(route, navigator) {
     switch (route.title) {
       case 'Profile':
-        return <ProfilePage navigator={nav}/>
+        return <ProfilePage navigator={ navigator }/>
       case 'Settings':
-        return (
-          <ScrollView style={ styles.profileView } navigator={nav}>
-            <Button style={ styles.wideButton } onPress={ function() { nav.pop() }} title="Back" color="#4c97cf"></Button>
-            <Text>Settings page</Text>
-          </ScrollView>
-        )
+        return <SettingsPage navigator={ navigator }/>
     }
   }
+
+  componentDidMount() {
+    fetch('http://localhost:8000/user/58d62fc6dfb3170d1899eb85').then((response) => response.json())
+      .then((response) => {
+        store.dispatch({
+          type: 'USER_EXISTS',
+          user: response
+        });
+      })
+      .done();
+  }
 }
+
+const mapStateToProps = function (store) {
+  return {
+    user: store.user
+  }
+}
+
+export default connect(mapStateToProps)(UserPage)

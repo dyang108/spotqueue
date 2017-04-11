@@ -3,47 +3,71 @@ import {
   Text,
   View,
   Image,
-  ScrollView,
-  Button,
-  Navigator
+  ScrollView
 } from 'react-native';
-import styles from '../../../config/styles';
+import { connect } from 'react-redux'
+import store from 'src/store'
+import styles from 'src/config/styles';
+import WideButton from 'src/components/WideButton'
 
-export default class UserPage extends Component {
+
+class ProfilePage extends Component {
+  static propTypes = {
+    navigator: React.PropTypes.object
+  }
+
   constructor(props) {
     super(props);
-    this.state = {};
-    this.props = props;
+    this.state = store.getState()
   }
+
+  select(state) {
+    return {
+      user: state.user
+    }
+  }
+
+  componentDidMount() {
+    this.setState(this.select(store.getState()))
+    this.unsubscribe = store.subscribe(() => {
+      this.setState(this.select(store.getState()))
+    })
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe()
+  }
+
   render() {
-    var nav = this.props.navigator;
+    const { navigator } = this.props
     return (
-      <ScrollView style={ styles.profileView } navigator={ this.props.navigator }>
+      <ScrollView style={ styles.profileView } navigator={ navigator }>
         <View style={ styles.row }>
           <Image style={ styles.profilePic } source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}/>
           <View style={ styles.horizontalSpace }></View>
           <View style={ styles.center }>
-            <Text>{ this.state.username }</Text>
-            <Text>Followers: { this.state.followers }</Text>
-          </View>
-          <View style={ styles.center }>
-            <Button onPress={
-              function () {
-                nav.push({ title: 'Settings', index: 1})
-              }
-            } title="Edit Profile" color="#4c97cf"></Button>
+            <Text style={ styles.bold }>{ this.state.user.firstName } {this.state.user.lastName}</Text>
+            <Text style={ styles.bio }>{ this.state.user.username }</Text>
+            <Text style={ styles.bio }>{ this.state.user.bio }</Text>
           </View>
         </View>
+        <View style={ styles.verticalSpace }></View>
+          <WideButton onPress={
+            function () {
+              navigator.push({ title: 'Settings', index: 1})
+            }
+          } title="Edit Profile" color="transparent"></WideButton>
         <View style={ styles.hr }></View>
-        <View style={ styles.row }>{ this.state.bio }</View>
       </ScrollView>
     )
   }
-  componentWillMount() {
-    fetch("http://localhost:8000/user/58d62fc6dfb3170d1899eb85").then((response) => response.json())
-      .then((responseData) => {
-        this.setState(responseData);
-      })
-      .done();
-  }
+
 }
+
+// const mapStateToProps = function (store) {
+//   return {
+//     user: store.userState
+//   }
+// }
+
+export default ProfilePage

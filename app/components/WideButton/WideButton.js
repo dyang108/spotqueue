@@ -10,17 +10,6 @@ import styles from './styles'
 
 
 class WideButton extends React.Component {
-
-  props: {
-    title: string,
-    onPress: () => any,
-    color?: ?string, // background color
-    fontColor?: ?string,
-    accessibilityLabel?: ?string,
-    disabled?: ?boolean,
-    testID?: ?string,
-  };
-
   static propTypes = {
     /**
      * Text to display inside the button

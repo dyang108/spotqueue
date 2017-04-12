@@ -1,13 +1,13 @@
 import {
   StyleSheet
-} from 'react-native';
+} from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 20.5,
-    borderTopWidth: .5,
-    borderTopColor: '#ddd',
+    borderTopWidth: 0.5,
+    borderTopColor: '#ddd'
   },
   profileView: {
     flex: 1,
@@ -27,17 +27,17 @@ const styles = StyleSheet.create({
   },
   verticalSpace: {
     flex: 1,
-    height: 12,
+    height: 12
   },
   hr: {
     marginTop: 15,
     marginBottom: 15,
     borderColor: '#ddd',
-    borderWidth: .5
+    borderWidth: 0.5
   },
   center: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   centerSecondary: {
     alignItems: 'center'
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 10,
+    paddingBottom: 10
   },
   tabs: {
     height: 45,
@@ -56,27 +56,27 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: 'rgba(0,0,0,0.05)',
+    borderBottomColor: 'rgba(0,0,0,0.05)'
   },
   wideButton: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: 'black',
+    backgroundColor: 'black'
   },
   inputBox: {
     height: 30,
     padding: 5,
-    flex: 1,
+    flex: 1
   },
   bigInputBox: {
     height: 60,
     padding: 5,
-    flex: 1,
+    flex: 1
   },
   textInputWrapper: {
     borderBottomColor: '#666666',
     borderBottomWidth: 1,
-    flex: 1,
+    flex: 1
   },
   disabled: {
     color: '#bbb'
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   bio: {
-    color: '#888',
+    color: '#888'
   }
-});
+})
 
 export default styles

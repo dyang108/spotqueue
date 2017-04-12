@@ -5,7 +5,7 @@ var SongId = String // TODO: change this with actual format of song id
 
 /*
 Schemas
-  User schema: 
+  User schema:
     _id: ObjectId
     username: String
     firstName: String
@@ -21,11 +21,11 @@ Schemas
 */
 
 var User = mongoose.model('User', {
-  username: String,
+  username: { type: String, unique: true },
   firstName: String,
   lastName: String,
   bio: String,
-  friends: [Schema.Types.ObjectId],
+  friends: [String],
   currentRadio: Schema.Types.ObjectId
 })
 
@@ -33,7 +33,7 @@ var Radio = mongoose.model('Radio', {
   title: String,
   currentSong: SongId,
   includes: [SongId],
-  upNext: [SongId],
+  upNext: [SongId]
 })
 
 module.exports = {

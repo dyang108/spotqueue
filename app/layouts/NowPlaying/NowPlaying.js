@@ -1,17 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   Text,
   View
-} from 'react-native';
+} from 'react-native'
 import styles from 'src/config/styles'
 
-
 export default class NowPlaying extends Component {
-  render() {
+  render () {
     return (
-      <View style={ styles.mainView }>
-      <Text>Now playing</Text>
+      <View style={styles.mainView}>
+        <Text>Now playing</Text>
       </View>
-    );
+    )
   }
 }

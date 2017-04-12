@@ -99,13 +99,13 @@ export default class SettingsPage extends React.Component {
       <ScrollView style={ styles.profileView } navigator={ navigator }>
         <WideButton style={ styles.wideButton } onPress={
           function() { navigator.pop() }
-        } title="Back" color="transparent"></WideButton>
+        } title='Back' color='transparent'></WideButton>
         <View style={styles.hr}></View>
-        <SettingsRow editable={false} inputName="Username" inputValue={ this.state.user.username } inputChange={ this.updateUserField('username') }/>
+        <SettingsRow editable={false} inputName='Username' inputValue={ this.state.user.username } inputChange={ this.updateUserField('username') }/>
         <SettingsRow inputName='First Name' inputValue={ this.state.editedUser.firstName } inputChange={ this.updateUserField('firstName') }/>
         <SettingsRow inputName='Last Name' inputValue={ this.state.editedUser.lastName } inputChange={ this.updateUserField('lastName') }/>
         <SettingsRow multiline={true} inputName='Bio' inputValue={ this.state.editedUser.bio } inputChange={ this.updateUserField('bio') }/>
-        <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title="Save Changes" color="transparent"></WideButton>
+        <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title='Save Changes' color='transparent'></WideButton>
       </ScrollView>
     )
   }

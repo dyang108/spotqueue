@@ -1,2 +1,2 @@
 import WideButton from './WideButton'
-export default WideButton;
+export default WideButton

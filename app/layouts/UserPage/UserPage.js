@@ -6,35 +6,30 @@ import { connect } from 'react-redux'
 import store from 'src/store'
 import ProfilePage from './ProfilePage'
 import SettingsPage from './SettingsPage'
-import WideButton from 'src/components/WideButton'
 
 class UserPage extends Component {
-  constructor(props) {
-    super(props)
-  }
-
-  render() {
+  render () {
     return (
       <Navigator
         initialRoute={{ title: 'Profile', index: 0 }}
-        renderScene={(route, navigator) =>
-          {return this.renderScene(route, navigator)}
-        }
+        renderScene={(route, navigator) => {
+          return this.renderScene(route, navigator)
+        }}
       />
     )
   }
 
-  renderScene(route, navigator) {
+  renderScene (route, navigator) {
     switch (route.title) {
       case 'Profile':
-        return <ProfilePage navigator={ navigator }/>
+        return <ProfilePage navigator={navigator} />
       case 'Settings':
-        return <SettingsPage navigator={ navigator }/>
+        return <SettingsPage navigator={navigator} />
     }
   }
 
-  componentDidMount() {
-    fetch('http://localhost:8000/user/58d62fc6dfb3170d1899eb85').then((response) => response.json())
+  componentDidMount () {
+    fetch('http://localhost:8000/user/derick').then((response) => response.json())
       .then((response) => {
         store.dispatch({
           type: 'USER_EXISTS',

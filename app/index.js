@@ -1,35 +1,69 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
-  Text,
   View,
   StatusBar,
-} from 'react-native';
+  AsyncStorage
+} from 'react-native'
 import {
   Provider
 } from 'react-redux'
 import store from './store'
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-import NowPlaying from './layouts/NowPlaying'
-import ProfilePage from './layouts/UserPage'
-import StationPage from './layouts/Stations'
-import SearchPage from './layouts/Search'
-import styles from './config/styles'
-import IconTabBar from './layouts/IconTabBar'
+import MainView from './MainView'
 
-export default class spotqueueRN extends Component {
-  render() {
+const USERNAME = '@AsyncStore:username'
+
+class spotqueueRN extends Component {
+  constructor () {
+    super()
+    this.state = {
+      loginStatus: 'load'
+    }
+  }
+
+  componentDidMount () {
+    this.findUser()
+    this.unsubscribe = store.subscribe(() => {
+      this.findUser()
+    })
+  }
+
+  componentWillUnmount () {
+    this.unsubscribe()
+  }
+
+  findUser () {
+    this._loadInitialState()
+      .then((user) => {
+        if (user !== null) {
+          this.setState({
+            loginStatus: 'in',
+            user: user
+          })
+        } else {
+          this.setState({loginStatus: 'out'})
+        }
+      })
+  }
+
+  async _loadInitialState () {
+    try {
+      return await AsyncStorage.getItem(USERNAME)
+    } catch (error) {
+      console.log('error happened')
+      return null
+    }
+  }
+
+  render () {
     return (
-      <Provider store={ store }>
-      <View style={{ flex: 1 }}>
-        <StatusBar/>
-        <ScrollableTabView tabBarPosition="top" style={ styles.container } renderTabBar={() => <IconTabBar/>}>
-          <NowPlaying tabLabel="play"/>
-          <SearchPage tabLabel="search"/>
-          <StationPage tabLabel="list"/>
-          <ProfilePage tabLabel="user"/>
-        </ScrollableTabView>
-      </View>
+      <Provider store={store}>
+        <View style={{ flex: 1 }}>
+          <StatusBar />
+          <MainView loginStatus={this.state.loginStatus} />
+        </View>
       </Provider>
-    );
+    )
   }
 }
+
+export default spotqueueRN

@@ -1,2 +1,2 @@
 import IconTabBar from './IconTabBar'
-export default IconTabBar;
+export default IconTabBar

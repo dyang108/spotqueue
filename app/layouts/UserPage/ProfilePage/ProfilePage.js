@@ -16,28 +16,6 @@ class ProfilePage extends Component {
     navigator: React.PropTypes.object
   }
 
-  constructor(props) {
-    super(props)
-    this.state = store.getState()
-  }
-
-  select(storedState) {
-    return {
-      user: storedState.user
-    }
-  }
-
-  componentDidMount() {
-    this.setState(this.select(store.getState()))
-    this.unsubscribe = store.subscribe(() => {
-      this.setState(this.select(store.getState()))
-    })
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
   render() {
     const { navigator } = this.props
     return (
@@ -46,9 +24,9 @@ class ProfilePage extends Component {
           <Image style={ styles.profilePic } source={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}/>
           <View style={ styles.horizontalSpace }></View>
           <View style={ styles.center }>
-            <Text style={ styles.bold }>{ this.state.user.firstName } {this.state.user.lastName}</Text>
-            <Text style={ styles.bio }>{ this.state.user.username }</Text>
-            <Text style={ styles.bio }>{ this.state.user.bio }</Text>
+            <Text style={ styles.bold }>{ this.props.user.firstName } {this.props.user.lastName}</Text>
+            <Text style={ styles.bio }>{ this.props.user.userID }</Text>
+            <Text style={ styles.bio }>{ this.props.user.bio }</Text>
           </View>
         </View>
         <View style={ styles.verticalSpace }></View>
@@ -61,7 +39,12 @@ class ProfilePage extends Component {
       </ScrollView>
     )
   }
-
 }
 
-export default ProfilePage
+const mapStateToProps = (store) => {
+  return {
+    user: store.user
+  }
+}
+
+export default connect(mapStateToProps)(ProfilePage)

@@ -16,15 +16,15 @@ Will use: SocketIO
     nodemon server/index.js
 ### Start app
     react-native run-ios
-* You might need to install the facebook sdk [here](https://developers.facebook.com/docs/ios/getting-started/) *
 
+* You might need to install the facebook sdk [here](https://developers.facebook.com/docs/ios/getting-started/). Make sure you put it in ~/Documents/FacebookSDK *
 
 This project follows [standard](https://github.com/feross/standard) style.
 
 ## Best Practices
 * break up styles file (**TODO**)
 * use style constants (**TODO**)
-* redux (**TODO**)
+* redux
   * presentational components do *not* `connect()`
   * do not use `subscribe()` directly
 * models separate from apis on server side

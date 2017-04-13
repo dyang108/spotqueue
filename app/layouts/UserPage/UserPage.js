@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {
   Navigator
 } from 'react-native'
-import { connect } from 'react-redux'
+// import { connect } from 'react-redux'
 import ProfilePage from './ProfilePage'
 import SettingsPage from './SettingsPage'
 
@@ -28,10 +28,4 @@ class UserPage extends Component {
   }
 }
 
-const mapStateToProps = function (store) {
-  return {
-    user: store.user
-  }
-}
-
-export default connect(mapStateToProps)(UserPage)
+export default UserPage

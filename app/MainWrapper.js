@@ -17,12 +17,22 @@ class MainWrapperClass extends Component {
 
   findUser () {
     this._loadInitialState()
-      .then((user) => {
-        if (user !== null) {
-          console.log('Async store found user')
+      .then((userID) => {
+        if (userID !== null) {
+          console.log('Async store found userID')
+          fetch('http://localhost:8000/user/' + userID)
+            .then((res) => {
+              return res.json()
+            })
+            .then((user) => {
+              store.dispatch({
+                type: 'LOGGED_IN',
+                user: user
+              })
+            })
+        } else {
           store.dispatch({
-            type: 'LOGGED_IN',
-            user: user
+            type: 'LOGGED_OUT'
           })
         }
       })
@@ -38,7 +48,6 @@ class MainWrapperClass extends Component {
   }
 
   render () {
-    console.log(this.props.loginStatus)
     return (
       <View style={{ flex: 1 }}>
         <StatusBar />

@@ -7,7 +7,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 20.5,
     borderTopWidth: 0.5,
-    borderTopColor: '#ddd'
+    borderTopColor: '#ddd',
+    alignItems: 'center'
   },
   profileView: {
     flex: 1,

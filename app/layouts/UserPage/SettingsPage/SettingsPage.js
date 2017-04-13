@@ -27,6 +27,8 @@ const SettingsRow = ({ inputValue, inputChange, inputName, editable, multiline }
     </View>
   )
 
+// TODO: get rid of subscribe
+
 export default class SettingsPage extends React.Component {
   static propTypes = {
     navigator: React.PropTypes.object
@@ -72,7 +74,7 @@ export default class SettingsPage extends React.Component {
       })
       .then((resJson) => {
         store.dispatch({
-          type: 'USER_EXISTS',
+          type: 'USER_EDITED',
           user: resJson
         })
       })
@@ -101,9 +103,7 @@ export default class SettingsPage extends React.Component {
           function() { navigator.pop() }
         } title='Back' color='transparent'></WideButton>
         <View style={styles.hr}></View>
-        <SettingsRow editable={false} inputName='Username' inputValue={ this.state.user.username } inputChange={ this.updateUserField('username') }/>
-        <SettingsRow inputName='First Name' inputValue={ this.state.editedUser.firstName } inputChange={ this.updateUserField('firstName') }/>
-        <SettingsRow inputName='Last Name' inputValue={ this.state.editedUser.lastName } inputChange={ this.updateUserField('lastName') }/>
+        <SettingsRow editable={false} inputName='Username' inputValue={ this.state.user.username } />
         <SettingsRow multiline={true} inputName='Bio' inputValue={ this.state.editedUser.bio } inputChange={ this.updateUserField('bio') }/>
         <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title='Save Changes' color='transparent'></WideButton>
       </ScrollView>

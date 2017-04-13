@@ -3,7 +3,6 @@ import {
   Navigator
 } from 'react-native'
 import { connect } from 'react-redux'
-import store from 'src/store'
 import ProfilePage from './ProfilePage'
 import SettingsPage from './SettingsPage'
 
@@ -26,17 +25,6 @@ class UserPage extends Component {
       case 'Settings':
         return <SettingsPage navigator={navigator} />
     }
-  }
-
-  componentDidMount () {
-    fetch('http://localhost:8000/user/derick').then((response) => response.json())
-      .then((response) => {
-        store.dispatch({
-          type: 'USER_EXISTS',
-          user: response
-        })
-      })
-      .done()
   }
 }
 

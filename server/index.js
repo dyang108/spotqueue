@@ -27,10 +27,10 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // this line used for the socket.io connection
 // server.listen(80)
 
-// ALWAYS use username, not objectID
-app.route('/user/:username')
+// ALWAYS use userID, not objectID
+app.route('/user/:userID')
   .get((req, res, next) => {
-    User.findOne({ username: req.params.username }, (err, item) => {
+    User.findOne({ userID: req.params.userID }, (err, item) => {
       if (err) {
         res.sendStatus(500)
       }
@@ -50,11 +50,11 @@ app.route('/user/:username')
 app.route('/user')
   .post((req, res, next) => {
     var newUser = new User(req.body)
-    newUser.save((err, res) => {
+    newUser.save((err, userObj) => {
       if (err) {
         res.sendStatus(500)
       }
-      res.sendStatus(200)
+      res.json(userObj)
     })
   })
 

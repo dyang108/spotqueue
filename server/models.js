@@ -21,9 +21,8 @@ Schemas
 */
 
 var User = mongoose.model('User', {
-  username: { type: String, unique: true },
-  firstName: String,
-  lastName: String,
+  // should be identical to the Facebook userID from the SDK
+  userID: { type: String, unique: true },
   bio: String,
   friends: [String],
   currentRadio: Schema.Types.ObjectId

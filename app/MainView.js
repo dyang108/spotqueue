@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {
   Text,
-  View
+  View,
+  ActivityIndicator
 } from 'react-native'
 import ScrollableTabView from 'react-native-scrollable-tab-view'
 import NowPlaying from './layouts/NowPlaying'
@@ -17,7 +18,13 @@ export default class MainView extends Component {
     // switch between logged in and out
     switch (this.props.loginStatus) {
       case ('load'):
-        return <View style={styles.container}><Text>Loading</Text></View>
+        return (
+          <View style={[styles.container, styles.center]}>
+            <ActivityIndicator
+              style={[styles.centering, {height: 80}]}
+              size='large' />
+          </View>
+        )
       case ('in'):
         return (
           <ScrollableTabView tabBarPosition='top' style={styles.container} renderTabBar={() => <IconTabBar />}>
@@ -29,8 +36,9 @@ export default class MainView extends Component {
         )
       case ('out'):
         return (
-          <View style={[styles.container, styles.centerSecondary]}>
-            <Text>Not logged in</Text>
+          <View style={[styles.container, styles.center]}>
+            <Text style={styles.bold}>Spotqueue</Text>
+            <View style={styles.row}><View style={styles.hr} /></View>
             <Login />
           </View>
         )

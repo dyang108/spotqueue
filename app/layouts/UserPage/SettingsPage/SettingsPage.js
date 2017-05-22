@@ -3,9 +3,15 @@ import {
   ScrollView,
   View,
   Text,
-  TextInput 
+  TextInput,
+  AsyncStorage,
+  NativeModules
 } from 'react-native'
 import { connect } from 'react-redux'
+import {
+  LoginButton
+} from 'react-native-fbsdk'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from 'src/config/styles'
 import WideButton from 'src/components/WideButton'
 import store from 'src/store'
@@ -43,7 +49,7 @@ class SettingsPage extends React.Component {
 
   save (user) {
     return function () {
-      fetch('http://localhost:8000/user/' + user.userID, {
+      fetch(process.env.API_URL + '/user/' + user.userID, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -61,6 +67,17 @@ class SettingsPage extends React.Component {
         })
       })
     }
+  }
+
+  spotifyLogin () {
+    var SpotifyAuth = NativeModules.SpotifyAuth
+    SpotifyAuth.setClientID('7654d8a362e04f9ea077f60381c74dda','spotqueue://callback', ['streaming'], (error) => {
+      if (error){
+        console.log(error)
+      } else {
+        console.log('success!')
+      }
+    })
   }
 
   // function used to change the value in the state (this is what
@@ -88,6 +105,17 @@ class SettingsPage extends React.Component {
         <View style={styles.hr}></View>
         <SettingsRow multiline={true} inputName='Bio' inputValue={ this.state.editedUser.bio } inputChange={ this.updateUserField('bio') }/>
         <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title='Save Changes' color='transparent'></WideButton>
+        <View style={ styles.hr }></View>
+        <View style={ styles.center, styles.centerSecondary }><Text style={{fontSize: 15}}>Connect to Spotify <Icon size={15} name='spotify'></Icon></Text></View>
+        <View style={styles.verticalSpace} />
+        <WideButton style={ styles.wideButton } onPress={ this.spotifyLogin } title='Log in' color='#2ebd59' fontColor='#fff'></WideButton>
+        <View style={styles.hr} />
+        <View style={ styles.center, styles.centerSecondary }><LoginButton onLogoutFinished={() => {
+          AsyncStorage.removeItem('@AsyncStore:USERID')
+          store.dispatch({
+            type: 'LOGGED_OUT'
+          })
+        }} /></View>
       </ScrollView>
     )
   }

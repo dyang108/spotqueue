@@ -13,7 +13,7 @@ const userReducer = function (state = { user: {}, loginStatus: 'load' }, action)
     case 'LOGIN_LOADING':
       return Object.assign({}, state, {loginStatus: 'load'})
     case 'LOGGED_OUT':
-      return Object.assign({}, state, {loginStatus: 'out'})
+      return Object.assign({}, state, {user: {}, loginStatus: 'out'})
     default:
       return state
   }

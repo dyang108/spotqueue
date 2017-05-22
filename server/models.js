@@ -25,7 +25,11 @@ var User = mongoose.model('User', {
   userID: { type: String, unique: true },
   bio: String,
   friends: [String],
-  currentRadio: Schema.Types.ObjectId
+  currentRadio: Schema.Types.ObjectId,
+  firstName: String,
+  lastName: String,
+  gender: String,
+  photoUrl: String
 })
 
 var Radio = mongoose.model('Radio', {

@@ -15,11 +15,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: 'white'
   },
-  profilePic: {
-    height: 100,
-    width: 100,
-    borderRadius: 50
-  },
   row: {
     flexDirection: 'row'
   },
@@ -34,7 +29,8 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 15,
     borderColor: '#ddd',
-    borderWidth: 0.5
+    borderWidth: 0.5,
+    flex: 1
   },
   center: {
     flex: 1,

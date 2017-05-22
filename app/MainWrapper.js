@@ -16,11 +16,13 @@ class MainWrapperClass extends Component {
   }
 
   findUser () {
+    // For mistakes when I removed the database instance first
+    // AsyncStorage.removeItem(USERID)
     this._loadInitialState()
       .then((userID) => {
         if (userID !== null) {
           console.log('Async store found userID')
-          fetch('http://localhost:8000/user/' + userID)
+          fetch(process.env.API_URL + '/user/' + userID)
             .then((res) => {
               return res.json()
             })

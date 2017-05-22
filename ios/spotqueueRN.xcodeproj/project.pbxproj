@@ -41,6 +41,12 @@
 		3C3F0FFA1E9F609100C63601 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C3F0FF61E9F609100C63601 /* FBSDKShareKit.framework */; };
 		3C75E2391E97D01F004F423C /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 3C75E2381E97D01F004F423C /* Fonts */; };
 		3C901CF71E979C9B006F0D28 /* spotqueueRN-tvOS.app in Resources */ = {isa = PBXBuildFile; fileRef = 2D02E47B1E0B4A5D006451C7 /* spotqueueRN-tvOS.app */; };
+		3CEF2C561ED36ABC00935CE3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CEF2C551ED36ABC00935CE3 /* AVFoundation.framework */; };
+		3CEF2C581ED36AC700935CE3 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CEF2C571ED36AC700935CE3 /* SystemConfiguration.framework */; };
+		3CEF2C5A1ED36D9E00935CE3 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CEF2C591ED36D9E00935CE3 /* WebKit.framework */; };
+		3CEF2C601ED3754800935CE3 /* Spotify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CEF2C5F1ED3754800935CE3 /* Spotify.framework */; };
+		3CEF2C651ED377A100935CE3 /* SpotifyAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEF2C621ED377A100935CE3 /* SpotifyAuth.m */; };
+		3CEF2C661ED377A100935CE3 /* SpotifyLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CEF2C641ED377A100935CE3 /* SpotifyLoginViewController.m */; };
 		492B2F5790AE4E70A247253D /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66FD4F5A4F78461A95C866DD /* MaterialIcons.ttf */; };
 		5BF461E251064798A916AAC5 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ABB179F4AEB84645A377C1CE /* MaterialCommunityIcons.ttf */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -301,6 +307,14 @@
 		3C3F0FF51E9F609100C63601 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../FacebookSDK/FacebookSDKs-iOS-4.21.0/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		3C3F0FF61E9F609100C63601 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../FacebookSDK/FacebookSDKs-iOS-4.21.0/FBSDKShareKit.framework"; sourceTree = "<group>"; };
 		3C75E2381E97D01F004F423C /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
+		3CEF2C551ED36ABC00935CE3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		3CEF2C571ED36AC700935CE3 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		3CEF2C591ED36D9E00935CE3 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		3CEF2C5F1ED3754800935CE3 /* Spotify.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Spotify.framework; sourceTree = "<group>"; };
+		3CEF2C611ED377A100935CE3 /* SpotifyAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyAuth.h; sourceTree = "<group>"; };
+		3CEF2C621ED377A100935CE3 /* SpotifyAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifyAuth.m; sourceTree = "<group>"; };
+		3CEF2C631ED377A100935CE3 /* SpotifyLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpotifyLoginViewController.h; sourceTree = "<group>"; };
+		3CEF2C641ED377A100935CE3 /* SpotifyLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpotifyLoginViewController.m; sourceTree = "<group>"; };
 		47D8CD22365AAB963C3F4389 /* Pods-spotqueueRNTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spotqueueRNTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-spotqueueRNTests/Pods-spotqueueRNTests.debug.xcconfig"; sourceTree = "<group>"; };
 		4D7340372DB54A2B9637E09F /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		56C59FFC3E5097CEEB5705CD /* Pods-spotqueueRN.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spotqueueRN.debug.xcconfig"; path = "Pods/Target Support Files/Pods-spotqueueRN/Pods-spotqueueRN.debug.xcconfig"; sourceTree = "<group>"; };
@@ -335,6 +349,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CEF2C5A1ED36D9E00935CE3 /* WebKit.framework in Frameworks */,
+				3CEF2C581ED36AC700935CE3 /* SystemConfiguration.framework in Frameworks */,
+				3CEF2C561ED36ABC00935CE3 /* AVFoundation.framework in Frameworks */,
 				3C3F0FF91E9F609100C63601 /* FBSDKLoginKit.framework in Frameworks */,
 				3C3F0FF71E9F609100C63601 /* Bolts.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -345,6 +362,7 @@
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
+				3CEF2C601ED3754800935CE3 /* Spotify.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
@@ -444,6 +462,10 @@
 		082583934DB77E50419D5992 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3CEF2C5F1ED3754800935CE3 /* Spotify.framework */,
+				3CEF2C591ED36D9E00935CE3 /* WebKit.framework */,
+				3CEF2C571ED36AC700935CE3 /* SystemConfiguration.framework */,
+				3CEF2C551ED36ABC00935CE3 /* AVFoundation.framework */,
 				3C3F0FF31E9F609000C63601 /* Bolts.framework */,
 				3C3F0FF41E9F609000C63601 /* FBSDKCoreKit.framework */,
 				3C3F0FF51E9F609100C63601 /* FBSDKLoginKit.framework */,
@@ -485,6 +507,10 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				3CEF2C611ED377A100935CE3 /* SpotifyAuth.h */,
+				3CEF2C621ED377A100935CE3 /* SpotifyAuth.m */,
+				3CEF2C631ED377A100935CE3 /* SpotifyLoginViewController.h */,
+				3CEF2C641ED377A100935CE3 /* SpotifyLoginViewController.m */,
 			);
 			name = spotqueueRN;
 			sourceTree = "<group>";
@@ -1223,6 +1249,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CEF2C651ED377A100935CE3 /* SpotifyAuth.m in Sources */,
+				3CEF2C661ED377A100935CE3 /* SpotifyLoginViewController.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -1339,18 +1367,22 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"~/Documents/FacebookSDK",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = spotqueueRN/Info.plist;
+				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
+					"-ObjC",
 				);
 				PRODUCT_NAME = spotqueueRN;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1363,18 +1395,22 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "~/Documents/FacebookSDK";
+				FRAMEWORK_SEARCH_PATHS = (
+					"~/Documents/FacebookSDK",
+					"$(PROJECT_DIR)",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 				);
 				INFOPLIST_FILE = spotqueueRN/Info.plist;
+				INFOPLIST_PREPROCESS = NO;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					"-ObjC",
 					"-lc++",
+					"-ObjC",
 				);
 				PRODUCT_NAME = spotqueueRN;
 				VERSIONING_SYSTEM = "apple-generic";

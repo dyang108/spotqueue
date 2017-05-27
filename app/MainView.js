@@ -27,7 +27,7 @@ export default class MainView extends Component {
         )
       case ('in'):
         return (
-          <ScrollableTabView tabBarPosition='top' style={styles.container} renderTabBar={() => <IconTabBar />}>
+          <ScrollableTabView tabBarPosition='bottom' style={styles.container} renderTabBar={() => <IconTabBar />}>
             <NowPlaying tabLabel='play' />
             <SearchPage tabLabel='search' />
             <StationPage tabLabel='list' />

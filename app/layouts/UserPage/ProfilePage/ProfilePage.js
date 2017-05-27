@@ -18,7 +18,7 @@ class ProfilePage extends Component {
     navigator: React.PropTypes.object
   }
 
-  render() {
+  render () {
     const { navigator } = this.props
     return (
       <ScrollView style={ styles.profileView } navigator={ navigator }>
@@ -35,7 +35,7 @@ class ProfilePage extends Component {
             function () {
               navigator.push({ title: 'Settings', index: 1})
             }
-          } title="Edit Profile" color="transparent"></WideButton>
+          } title='Edit Profile' color='transparent'></WideButton>
         <View style={ styles.hr }></View>
       </ScrollView>
     )

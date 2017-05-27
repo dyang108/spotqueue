@@ -16,6 +16,8 @@ import styles from 'src/config/styles'
 import WideButton from 'src/components/WideButton'
 import store from 'src/store'
 
+var SpotifyAuth = NativeModules.SpotifyAuth
+
 const SettingsRow = ({ inputValue, inputChange, inputName, editable, multiline }) => (
     <View style={{ flex: 1 }}>
       <View style={ [styles.row, styles.centerSecondary] }>
@@ -45,6 +47,7 @@ class SettingsPage extends React.Component {
     this.state.user = this.props.user
     this.state.editedUser = this.props.user
     this.state.navigator = this.props.navigator
+    this.state.spotifyLoggedIn = false
   }
 
   save (user) {
@@ -70,12 +73,35 @@ class SettingsPage extends React.Component {
   }
 
   spotifyLogin () {
-    var SpotifyAuth = NativeModules.SpotifyAuth
-    SpotifyAuth.setClientID('7654d8a362e04f9ea077f60381c74dda','spotqueue://callback', ['streaming'], (error) => {
-      if (error){
-        console.log(error)
-      } else {
-        console.log('success!')
+    SpotifyAuth.setClientID(
+      '7654d8a362e04f9ea077f60381c74dda',
+      'spotqueue://callback', [
+        'streaming',
+        'playlist-read-private',
+        'playlist-read-collaborative',
+        'playlist-modify-public',
+        'playlist-modify-private',
+        'user-library-read'
+      ], (error) => {
+        if (error){
+          console.log(error)
+        } else {
+          console.log('success!')
+          store.dispatch({
+            type: 'SPOTIFY_LOGIN'
+          })
+        }
+      })
+  }
+
+  spotifyLogout () {
+    console.log('logging out')
+    SpotifyAuth.logout()
+    SpotifyAuth.loggedIn(res => {
+      if (res === false) {
+        store.dispatch({
+          type: 'SPOTIFY_LOGOUT'
+        })
       }
     })
   }
@@ -94,21 +120,15 @@ class SettingsPage extends React.Component {
     return updateField
   }
 
-  goBack = () => {
-    this.state.navigator.pop()
-  }
-
   render () {
     return (
       <ScrollView style={ styles.profileView } navigator={ this.state.navigator }>
-        <WideButton style={ styles.wideButton } onPress={ this.goBack.bind(this) } title='Back' color='transparent'></WideButton>
-        <View style={styles.hr}></View>
         <SettingsRow multiline={true} inputName='Bio' inputValue={ this.state.editedUser.bio } inputChange={ this.updateUserField('bio') }/>
         <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title='Save Changes' color='transparent'></WideButton>
         <View style={ styles.hr }></View>
         <View style={ styles.center, styles.centerSecondary }><Text style={{fontSize: 15}}>Connect to Spotify <Icon size={15} name='spotify'></Icon></Text></View>
         <View style={styles.verticalSpace} />
-        <WideButton style={ styles.wideButton } onPress={ this.spotifyLogin } title='Log in' color='#2ebd59' fontColor='#fff'></WideButton>
+        <WideButton style={ styles.wideButton } onPress={ this.props.spotifyLoggedIn ? this.spotifyLogout : this.spotifyLogin } title={ this.props.spotifyLoggedIn ? 'Already Logged In - Log Out.' : 'Log In' } color='#2ebd59' fontColor='#fff'></WideButton>
         <View style={styles.hr} />
         <View style={ styles.center, styles.centerSecondary }><LoginButton onLogoutFinished={() => {
           AsyncStorage.removeItem('@AsyncStore:USERID')
@@ -123,7 +143,8 @@ class SettingsPage extends React.Component {
 
 const mapStateToProps = (store) => {
   return {
-    user: store.user
+    user: store.user,
+    spotifyLoggedIn: store.spotifyStatus
   }
 }
 

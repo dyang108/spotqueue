@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     marginTop: 20.5,
     borderTopWidth: 0.5,
     borderTopColor: '#ddd',
-    alignItems: 'center'
+    alignItems: 'center',
+    flexDirection: 'column'
   },
   profileView: {
     flex: 1,
@@ -84,6 +85,16 @@ const styles = StyleSheet.create({
   },
   bio: {
     color: '#888'
+  },
+  navBar: {
+    backgroundColor: '#ddd',
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#666'
+  },
+  backButton: {
+    marginLeft: 15,
+    width: 50,
+    marginTop: -6
   }
 })
 

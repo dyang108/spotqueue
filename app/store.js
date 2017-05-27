@@ -4,7 +4,7 @@ import {
 } from 'redux'
 
 // The User Reducer
-const userReducer = function (state = { user: {}, loginStatus: 'load' }, action) {
+const userReducer = function (state = { user: {}, loginStatus: 'load', spotifyStatus: false }, action) {
   switch (action.type) {
     case 'USER_EDITED':
       return Object.assign({}, state, {user: action.user})
@@ -14,6 +14,10 @@ const userReducer = function (state = { user: {}, loginStatus: 'load' }, action)
       return Object.assign({}, state, {loginStatus: 'load'})
     case 'LOGGED_OUT':
       return Object.assign({}, state, {user: {}, loginStatus: 'out'})
+    case 'SPOTIFY_LOGIN':
+      return Object.assign({}, state, {spotifyStatus: true})
+    case 'SPOTIFY_LOGOUT':
+      return Object.assign({}, state, {spotifyStatus: false})
     default:
       return state
   }

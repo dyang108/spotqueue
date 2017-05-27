@@ -30,10 +30,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // ALWAYS use userID, not objectID
 app.route('/user/:userID')
   .get((req, res, next) => {
+      console.log('hi')
     User.findOne({ userID: req.params.userID }, (err, item) => {
       if (err) {
         res.sendStatus(500)
       }
+      console.log('hi')
       res.json(item)
     })
   })

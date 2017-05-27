@@ -14,8 +14,8 @@ Will use: SocketIO
     npm install
 ### Run server
     nodemon server/index.js
-### Start app
-    react-native run-ios
+### Start app with environment variables
+    API_URL='http://localhost:8000' npm start
 
 * You might need to install the facebook sdk [here](https://developers.facebook.com/docs/ios/getting-started/). Make sure you put it in ~/Documents/FacebookSDK *
 

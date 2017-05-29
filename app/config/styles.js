@@ -2,14 +2,13 @@ import {
   StyleSheet
 } from 'react-native'
 
+const searchHeight = 80
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 20.5,
-    borderTopWidth: 0.5,
-    borderTopColor: '#ddd',
-    alignItems: 'center',
-    flexDirection: 'column'
+    alignItems: 'center'
   },
   profileView: {
     flex: 1,
@@ -50,11 +49,10 @@ const styles = StyleSheet.create({
     height: 45,
     flexDirection: 'row',
     paddingTop: 5,
-    borderWidth: 1,
-    borderTopWidth: 0,
+    borderTopWidth: 0.5,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: 'rgba(0,0,0,0.05)'
+    borderTopColor: 'rgba(0,0,0,0.05)'
   },
   wideButton: {
     flex: 1,
@@ -91,10 +89,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: '#666'
   },
-  backButton: {
-    marginLeft: 15,
-    width: 50,
-    marginTop: -6
+  inputLine: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 5,
+    padding: 10,
+    height: 40,
+    flex: 1
+  },
+  albumArt: {
+    height: searchHeight,
+    width: searchHeight
+  },
+  searchResult: {
+    borderTopWidth: 1,
+    height: searchHeight,
+    flex: 1
   }
 })
 

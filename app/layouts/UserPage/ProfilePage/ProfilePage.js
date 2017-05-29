@@ -12,7 +12,6 @@ import pageStyles from './styles'
 import styles from 'src/config/styles'
 import WideButton from 'src/components/WideButton'
 
-
 class ProfilePage extends Component {
   static propTypes = {
     navigator: React.PropTypes.object
@@ -35,7 +34,7 @@ class ProfilePage extends Component {
             function () {
               navigator.push({ title: 'Settings', index: 1})
             }
-          } title='Edit Profile' color='transparent'></WideButton>
+          } title='Edit Profile'></WideButton>
         <View style={ styles.hr }></View>
       </ScrollView>
     )

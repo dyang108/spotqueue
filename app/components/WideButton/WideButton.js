@@ -1,11 +1,11 @@
-import ColorPropType from 'ColorPropType';
-import Platform from 'Platform';
-import React from 'React';
-import Text from 'Text';
-import TouchableNativeFeedback from 'TouchableNativeFeedback';
-import TouchableOpacity from 'TouchableOpacity';
-import View from 'View';
-import invariant from 'fbjs/lib/invariant';
+import ColorPropType from 'ColorPropType'
+import Platform from 'Platform'
+import React from 'React'
+import Text from 'Text'
+import TouchableNativeFeedback from 'TouchableNativeFeedback'
+import TouchableOpacity from 'TouchableOpacity'
+import View from 'View'
+import invariant from 'fbjs/lib/invariant'
 import styles from './styles'
 
 
@@ -36,9 +36,9 @@ class WideButton extends React.Component {
      * Used to locate this view in end-to-end tests.
      */
     testID: React.PropTypes.string,
-  };
+  }
 
-  render() {
+  render () {
     const {
       accessibilityLabel,
       color,
@@ -46,27 +46,29 @@ class WideButton extends React.Component {
       title,
       disabled,
       testID,
-      fontColor,
-    } = this.props;
-    const buttonStyles = [styles.button];
-    const textStyles = [styles.text];
-    const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity;
-    buttonStyles.push({backgroundColor: color});
+      fontColor
+    } = this.props
+    const buttonStyles = [styles.button]
+    const textStyles = [styles.text]
+    const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
+    if (color) {
+      buttonStyles.push({backgroundColor: color})
+    }
     if (fontColor) {
       textStyles.push({color: fontColor})
     }
     if (disabled) {
-      buttonStyles.push(styles.buttonDisabled);
-      textStyles.push(styles.textDisabled);
+      buttonStyles.push(styles.buttonDisabled)
+      textStyles.push(styles.textDisabled)
     }
     invariant(
       typeof title === 'string' ,
       'The title prop of a Button must be a string',
-    );
-    const formattedTitle = Platform.OS === 'android' ? title.toUpperCase() : title;
-    const accessibilityTraits = ['button'];
+    )
+    const formattedTitle = Platform.OS === 'android' ? title.toUpperCase() : title
+    const accessibilityTraits = ['button']
     if (disabled) {
-      accessibilityTraits.push('disabled');
+      accessibilityTraits.push('disabled')
     }
     return (
       <Touchable
@@ -80,8 +82,8 @@ class WideButton extends React.Component {
           <Text style={textStyles} disabled={disabled}>{formattedTitle}</Text>
         </View>
       </Touchable>
-    );
+    )
   }
 }
 
-module.exports = WideButton;
+module.exports = WideButton

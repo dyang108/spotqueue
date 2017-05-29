@@ -6,9 +6,9 @@ import Platform from 'Platform'
 const styles = StyleSheet.create({
   button: {
     elevation: 4,
-    // backgroundColor: defaultBlue,
-    paddingLeft: 10,
-    paddingRight: 10,
+    backgroundColor: 'transparent',
+    paddingLeft: 20,
+    paddingRight: 20,
     borderRadius: 40,
     borderWidth: 1,
     borderColor: '#2196F3',

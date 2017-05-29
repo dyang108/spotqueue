@@ -124,7 +124,7 @@ class SettingsPage extends React.Component {
     return (
       <ScrollView style={ styles.profileView } navigator={ this.state.navigator }>
         <SettingsRow multiline={true} inputName='Bio' inputValue={ this.state.editedUser.bio } inputChange={ this.updateUserField('bio') }/>
-        <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title='Save Changes' color='transparent'></WideButton>
+        <WideButton style={ styles.wideButton } onPress={ this.save(this.state.editedUser) } title='Save Changes'></WideButton>
         <View style={ styles.hr }></View>
         <View style={ styles.center, styles.centerSecondary }><Text style={{fontSize: 15}}>Connect to Spotify <Icon size={15} name='spotify'></Icon></Text></View>
         <View style={styles.verticalSpace} />

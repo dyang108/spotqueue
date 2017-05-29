@@ -1,28 +1,60 @@
 import {
-  createStore
-  /* combineReducers */
+  createStore,
+  combineReducers
 } from 'redux'
 
 // The User Reducer
-const userReducer = function (state = { user: {}, loginStatus: 'load', spotifyStatus: false }, action) {
+const userReducer = function (state = {}, action) {
   switch (action.type) {
     case 'USER_EDITED':
-      return Object.assign({}, state, {user: action.user})
+      return Object.assign({}, state, action.user)
     case 'LOGGED_IN':
-      return Object.assign({}, state, {user: action.user, loginStatus: 'in'})
-    case 'LOGIN_LOADING':
-      return Object.assign({}, state, {loginStatus: 'load'})
+      return Object.assign({}, state, action.user)
     case 'LOGGED_OUT':
-      return Object.assign({}, state, {user: {}, loginStatus: 'out'})
-    case 'SPOTIFY_LOGIN':
-      return Object.assign({}, state, {spotifyStatus: true})
-    case 'SPOTIFY_LOGOUT':
-      return Object.assign({}, state, {spotifyStatus: false})
+      return {}
     default:
       return state
   }
 }
 
-var store = createStore(userReducer)
+const loginStatusReducer = function (state = 'load', action) {
+  switch (action.type) {
+    case 'LOGGED_IN':
+      return 'in'
+    case 'LOGGED_OUT':
+      return 'out'
+    case 'LOGIN_LOADING':
+      return 'load'
+    default:
+      return state
+  }
+}
 
-export default store
+const spotifyLoginReducer = function (state = false, action) {
+  switch (action.type) {
+    case 'SPOTIFY_LOGIN':
+      return true
+    case 'SPOTIFY_LOGOUT':
+      return false
+    default:
+      return state
+  }
+}
+
+const newPlaylistReducer = function (state = {}, action) {
+  switch (action.type) {
+    case 'PLAYLIST_TITLE':
+      return Object.assign({}, state, { title: action.title })
+    default:
+      return state
+  }
+}
+
+var reducers = combineReducers({
+  user: userReducer,
+  loginStatus: loginStatusReducer,
+  spotifyStatus: spotifyLoginReducer,
+  newPlaylist: newPlaylistReducer
+})
+
+export default createStore(reducers)

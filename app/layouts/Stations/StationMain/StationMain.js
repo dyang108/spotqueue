@@ -18,11 +18,10 @@ export default class StationMain extends Component {
   render () {
     const { navigator } = this.props
     return (
-      <ScrollView navigator={ navigator }>
-        <View style={ styles.verticalSpace }></View>
+      <ScrollView navigator={ navigator } style={ styles.profileView }>
         <WideButton onPress={
             function () {
-              navigator.push({ title: 'CreateStation', index: 1})
+              navigator.push({ title: 'Name Your Station', index: 1})
             }
           } title='Create Station'></WideButton>
       </ScrollView>

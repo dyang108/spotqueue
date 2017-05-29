@@ -1,35 +1,42 @@
 import React, { Component } from 'react'
 import {
-  View,
   Navigator
 } from 'react-native'
-import styles from 'src/config/styles'
-import WideButton from 'src/components/WideButton'
 import StationMain from './StationMain'
-import CreateStation from './CreateStation'
-
+import TitleStation from './TitleStation'
+import AddSongs from './AddSongs'
+import NavBar from 'src/components/NavBar'
+import styles from 'src/config/styles'
 export default class Stations extends Component {
   static propTypes = {
     navigator: React.PropTypes.object
   }
 
   render () {
+    const NavigationBarRouteMapper = NavBar
     return (
       <Navigator
-        initialRoute={{ title: 'StationMain', index: 0 }}
+        initialRoute={{ title: 'Stations', index: 0 }}
         renderScene={(route, navigator) => {
           return this.renderScene(route, navigator)
         }}
+        navigationBar={
+          <Navigator.NavigationBar routeMapper={NavigationBarRouteMapper}
+            style={styles.navBar}
+          />}
+        sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.NavBarHeight + 20}}
       />
     )
   }
 
   renderScene (route, navigator) {
     switch (route.title) {
-      case 'StationMain':
+      case 'Stations':
         return <StationMain navigator={navigator}/>
-      case 'CreateStation':
-        return <CreateStation navigator={navigator}/>
+      case 'Name Your Station':
+        return <TitleStation navigator={navigator}/>
+      case 'Add Songs':
+        return <AddSongs navigator={navigator}/>
     }
   }
 }

@@ -47,7 +47,6 @@ class SettingsPage extends React.Component {
     this.state.user = this.props.user
     this.state.editedUser = this.props.user
     this.state.navigator = this.props.navigator
-    this.state.spotifyLoggedIn = false
   }
 
   save (user) {

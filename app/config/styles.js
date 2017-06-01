@@ -3,6 +3,8 @@ import {
 } from 'react-native'
 
 const searchHeight = 80
+const lightGray = '#ddd'
+const mediumGray = '#aaa'
 
 const styles = StyleSheet.create({
   container: {
@@ -28,7 +30,7 @@ const styles = StyleSheet.create({
   hr: {
     marginTop: 15,
     marginBottom: 15,
-    borderColor: '#ddd',
+    borderColor: lightGray,
     borderWidth: 0.5,
     flex: 1
   },
@@ -52,12 +54,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 0.5,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderTopColor: 'rgba(0,0,0,0.05)'
+    borderTopColor: lightGray
   },
   wideButton: {
     flex: 1,
-    justifyContent: 'flex-start',
-    backgroundColor: 'black'
+    justifyContent: 'flex-start'
   },
   inputBox: {
     height: 30,
@@ -70,28 +71,29 @@ const styles = StyleSheet.create({
     flex: 1
   },
   textInputWrapper: {
-    borderBottomColor: '#666666',
+    borderBottomColor: mediumGray,
     borderBottomWidth: 1,
     flex: 1
   },
   disabled: {
-    color: '#bbb'
+    color: mediumGray
   },
   bold: {
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 16,
+    color: '#333'
   },
   bio: {
-    color: '#888'
+    color: mediumGray
   },
   navBar: {
-    backgroundColor: '#ddd',
+    backgroundColor: lightGray,
     borderBottomWidth: 0.5,
-    borderBottomColor: '#666'
+    borderBottomColor: mediumGray
   },
   inputLine: {
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: lightGray,
     borderRadius: 5,
     padding: 10,
     height: 40,
@@ -104,7 +106,12 @@ const styles = StyleSheet.create({
   searchResult: {
     borderTopWidth: 1,
     height: searchHeight,
-    flex: 1
+    flex: 1,
+    padding: 5,
+    borderTopColor: lightGray
+  },
+  gray: {
+    color: mediumGray
   }
 })
 

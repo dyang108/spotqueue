@@ -41,20 +41,34 @@ const spotifyLoginReducer = function (state = false, action) {
   }
 }
 
-const newPlaylistReducer = function (state = {}, action) {
+const playlistTitleReducer = function (state = '', action) {
   switch (action.type) {
     case 'PLAYLIST_TITLE':
-      return Object.assign({}, state, { title: action.title })
+      return action.title
     default:
       return state
   }
 }
 
+const playlistSongReducer = function (state = [], action) {
+  switch (action.type) {
+    case 'ADD_SONG_TO_PLAYLIST':
+      return state.concat([action.songId])
+    default:
+      return state
+  }
+}
+
+var playlistReducer = combineReducers({
+  title: playlistTitleReducer,
+  songs: playlistSongReducer
+})
+
 var reducers = combineReducers({
   user: userReducer,
   loginStatus: loginStatusReducer,
   spotifyStatus: spotifyLoginReducer,
-  newPlaylist: newPlaylistReducer
+  newPlaylist: playlistReducer
 })
 
 export default createStore(reducers)

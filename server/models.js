@@ -35,7 +35,7 @@ var User = mongoose.model('User', {
 var Radio = mongoose.model('Radio', {
   title: String,
   currentSong: SongId,
-  includes: [SongId],
+  songs: [SongId],
   upNext: [SongId]
 })
 

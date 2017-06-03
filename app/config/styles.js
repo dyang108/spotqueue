@@ -2,8 +2,9 @@ import {
   StyleSheet
 } from 'react-native'
 
-const searchHeight = 80
-const lightGray = '#ddd'
+const resultHeight = 80
+const inputsHeight = 40
+const lightGray = '#eee'
 const mediumGray = '#aaa'
 
 const styles = StyleSheet.create({
@@ -96,22 +97,33 @@ const styles = StyleSheet.create({
     borderColor: lightGray,
     borderRadius: 5,
     padding: 10,
-    height: 40,
+    height: inputsHeight,
     flex: 1
   },
   albumArt: {
-    height: searchHeight,
-    width: searchHeight
+    height: resultHeight,
+    width: resultHeight
   },
   searchResult: {
     borderTopWidth: 1,
-    height: searchHeight,
+    height: resultHeight,
     flex: 1,
     padding: 5,
     borderTopColor: lightGray
   },
   gray: {
     color: mediumGray
+  },
+  buttonStyle: {
+    height: inputsHeight,
+    marginLeft: 5,
+    marginRight: 5,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#ddd',
+    alignItems: 'center',
+    backgroundColor: '#eee',
+    paddingTop: 7
   }
 })
 

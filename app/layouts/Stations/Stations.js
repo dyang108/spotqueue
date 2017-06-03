@@ -7,6 +7,7 @@ import TitleStation from './TitleStation'
 import AddSongs from './AddSongs'
 import NavBar from 'src/components/NavBar'
 import styles from 'src/config/styles'
+
 export default class Stations extends Component {
   static propTypes = {
     navigator: React.PropTypes.object

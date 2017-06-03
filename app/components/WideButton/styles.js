@@ -12,7 +12,8 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     borderWidth: 1,
     borderColor: '#2196F3',
-    flex: 1
+    flex: 1,
+    height: 40
   },
   text: Platform.select({
     ios: {

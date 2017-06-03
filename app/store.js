@@ -45,6 +45,8 @@ const playlistTitleReducer = function (state = '', action) {
   switch (action.type) {
     case 'PLAYLIST_TITLE':
       return action.title
+    case 'PLAYLIST_SAVED_TO_SERVER':
+      return ''
     default:
       return state
   }
@@ -53,7 +55,9 @@ const playlistTitleReducer = function (state = '', action) {
 const playlistSongReducer = function (state = [], action) {
   switch (action.type) {
     case 'ADD_SONG_TO_PLAYLIST':
-      return state.concat([action.songId])
+      return state.concat([action.song])
+    case 'PLAYLIST_SAVED_TO_SERVER':
+      return []
     default:
       return state
   }

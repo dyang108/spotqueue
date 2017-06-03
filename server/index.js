@@ -82,7 +82,7 @@ app.route('/radio/:id')
 app.route('/radio')
   .post((req, res, next) => {
     var newRadio = new Radio(req.body)
-    newRadio.save((err, res) => {
+    newRadio.save((err, item) => {
       if (err) {
         res.sendStatus(500)
       }

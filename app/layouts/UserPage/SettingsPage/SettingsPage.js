@@ -55,7 +55,7 @@ class SettingsPage extends React.Component {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(user)
       })
@@ -94,7 +94,6 @@ class SettingsPage extends React.Component {
   }
 
   spotifyLogout () {
-    console.log('logging out')
     SpotifyAuth.logout()
     SpotifyAuth.loggedIn(res => {
       if (res === false) {

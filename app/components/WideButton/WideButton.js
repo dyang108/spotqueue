@@ -6,8 +6,9 @@ import TouchableNativeFeedback from 'TouchableNativeFeedback'
 import TouchableOpacity from 'TouchableOpacity'
 import View from 'View'
 import invariant from 'fbjs/lib/invariant'
+import Icon from 'react-native-vector-icons/FontAwesome'
 import styles from './styles'
-
+import StyleSheet from 'StyleSheet'
 
 class WideButton extends React.Component {
   static propTypes = {
@@ -46,7 +47,8 @@ class WideButton extends React.Component {
       title,
       disabled,
       testID,
-      fontColor
+      fontColor,
+      icon
     } = this.props
     const buttonStyles = [styles.button]
     const textStyles = [styles.text]
@@ -70,19 +72,37 @@ class WideButton extends React.Component {
     if (disabled) {
       accessibilityTraits.push('disabled')
     }
-    return (
-      <Touchable
-        accessibilityComponentType="button"
-        accessibilityLabel={accessibilityLabel}
-        accessibilityTraits={accessibilityTraits}
-        testID={testID}
-        disabled={disabled}
-        onPress={onPress}>
-        <View style={buttonStyles}>
-          <Text style={textStyles} disabled={disabled}>{formattedTitle}</Text>
-        </View>
-      </Touchable>
-    )
+    if (icon) {
+      return (
+        <Touchable
+          accessibilityComponentType="button"
+          accessibilityLabel={accessibilityLabel}
+          accessibilityTraits={accessibilityTraits}
+          testID={testID}
+          disabled={disabled}
+          onPress={onPress}>
+          <View style={buttonStyles}>
+            <Icon name={icon} style={{color: textStyles.color}} />
+            <Text style={textStyles} disabled={disabled}>{formattedTitle}</Text>
+          </View>
+        </Touchable>
+      )
+    } else {
+      return (
+        <Touchable
+          accessibilityComponentType="button"
+          accessibilityLabel={accessibilityLabel}
+          accessibilityTraits={accessibilityTraits}
+          testID={testID}
+          disabled={disabled}
+          onPress={onPress}
+          style={{height: StyleSheet.flatten(buttonStyles).height}}>
+          <View style={buttonStyles}>
+            <Text style={textStyles} disabled={disabled}>{formattedTitle}</Text>
+          </View>
+        </Touchable>
+      )
+    }
   }
 }
 

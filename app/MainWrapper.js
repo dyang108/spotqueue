@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {
   View,
-  StatusBar,
   AsyncStorage,
   NativeModules
 } from 'react-native'
@@ -19,6 +18,7 @@ class MainWrapperClass extends Component {
   }
 
   findUser () {
+    console.log(process.env)
     // For mistakes when I removed the database instance first
     // AsyncStorage.removeItem(USERID)
     SpotifyAuth.loggedIn(res => {

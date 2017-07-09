@@ -1,30 +1,152 @@
 import React, { Component } from 'react'
 import {
   ScrollView,
-  View
+  View,
+  ListView,
+  Text,
+  Image,
+  NativeModules
 } from 'react-native'
+import { connect } from 'react-redux'
 import WideButton from 'src/components/WideButton'
 import styles from 'src/config/styles'
+import IconButton from 'src/components/IconButton'
+import store from 'src/store'
+import _ from 'lodash'
+import ws from 'src/config/socket'
 
-export default class StationMain extends Component {
+var SpotifyModule = NativeModules.SpotifyAuth
+
+class StationMain extends Component {
   static propTypes = {
     navigator: React.PropTypes.object
+  }
+
+  constructor (props) {
+    super(props)
+    console.log('constructing')
+    this.state = {
+      playlists: (new ListView.DataSource({
+        rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.props.playlists)
+    }
+    this.getPlaylists()
+  }
+
+  componentWillReceiveProps (props) {
+    this.state = {
+      playlists: this.state.playlists.cloneWithRows(props.playlists)
+    }
+  }
+
+  getPlaylists() {
+    fetch(process.env.API_URL + '/radio', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((res) => {
+      return res.json()
+    }).then((res) => {
+      this.setState({
+        playlists: this.state.playlists.cloneWithRows(res)
+      })
+      store.dispatch({
+        type: 'GOT_ALL_PLAYLISTS',
+        playlists: res
+      })
+    })
   }
 
   goBack () {
     this.state.navigator.pop()
   }
 
+  playStation (stationId) {
+    fetch(process.env.API_URL + '/radio/' + stationId, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((res) => {
+      return res.json()
+    }).then((res) => {
+      SpotifyModule.playURI('spotify:track:' + res.songs[0], (err) => {
+        if (err) {
+          console.log(err)
+        } else {
+          store.dispatch({
+            type: 'RADIO_ON',
+            radioId: stationId
+          })
+          ws.addEventListener('next_song', (data) => {
+            console.log(data)
+          })
+          console.log(ws)
+        }
+      })
+    })
+  }
+
+  stopPlaying () {
+    SpotifyModule.setIsPlaying(false, (err) => {
+      if (err) {
+        console.log(err)
+      } else {
+        store.dispatch({
+          type: 'RADIO_OFF'
+        })
+      }
+    })
+  }
+
+  getAlbumArt (rowData) {
+    let url = _.get(rowData, ['currentSong', 'album', 'images', 0, 'url'])
+    if (url) {
+      return url
+    } else {
+      return 'src/assets/unknown-album.png'
+    }
+  }
+
   render () {
     const { navigator } = this.props
     return (
-      <ScrollView navigator={ navigator } style={ styles.profileView }>
+      <View navigator={ navigator } style={ styles.profileView }>
         <WideButton onPress={
             function () {
               navigator.push({ title: 'Name Your Station', index: 1})
             }
           } title='Create Station'></WideButton>
-      </ScrollView>
+          <ListView dataSource={this.state.playlists} style={{marginTop: 15}} renderRow={rowData => {
+            return (
+              <View style={{flexDirection: 'row'}}>
+              <Image style={styles.albumArt} source={{uri: this.getAlbumArt(rowData)}} />
+              <View style={[styles.searchResult, styles.centerSecondary, {flexDirection: 'row'}]}>
+                <View style={{flex: 4}}>
+                  <Text numberOfLines={1} style={styles.bold}>{rowData.title}</Text>
+                </View>
+                <View style={{flex: 1}}><IconButton style={{alignSelf: 'flex-end', borderWidth: 0, backgroundColor: 'transparent'}} icon={this.props.nowPlaying === rowData._id ? 'stop' : 'play'} onPress={() => {
+                  if (this.props.nowPlaying !== rowData._id) {
+                    this.playStation(rowData._id)
+                  } else {
+                    this.stopPlaying()
+                  }
+                }} /></View>
+              </View>
+            </View>
+            )
+          }}>
+          </ListView>
+      </View>
     )
   }
 }
+
+const mapStateToProps = (store) => {
+  return {
+    playlists: store.playlists,
+    nowPlaying: store.nowPlaying
+  }
+}
+
+export default connect(mapStateToProps)(StationMain)

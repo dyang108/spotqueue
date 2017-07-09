@@ -1,31 +1,11 @@
-var app = require('express')()
-var server = require('http').Server(app)
-var io = require('socket.io')(server)
-var bodyParser = require('body-parser')
-
-// DB imports
-var mongoose = require('mongoose')
-mongoose.Promise = require('bluebird')
 var { User, Radio } = require('./models')
-
-// connect to the database
-var url = 'mongodb://localhost:27017/spotqueue'
-mongoose.connect(url)
-var db = mongoose.connection
-
-db.on('error', console.error.bind(console, 'connection error:'))
-db.once('open', () => {
-  app.listen(8000, () => {
-    console.log('App running on port 8000')
-  })
-})
-
-// Connection URL
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-
-// this line used for the socket.io connection
-// server.listen(80)
+// connection to spotify
+var spotApi = require('./spotify')
+var { app } = require('./socket')
+// standard dependencies
+var Promise = require('bluebird')
+var _ = require('lodash')
+var startRadio = require('./radioStart')
 
 // ALWAYS use userID, not objectID
 app.route('/user/:userID')
@@ -81,18 +61,31 @@ app.route('/radio/:id')
 
 app.route('/radio')
   .post((req, res, next) => {
-    var newRadio = new Radio(req.body)
-    newRadio.save((err, item) => {
+    spotApi.getTrack(req.body.songs[0])
+      .then((trackRes) => {
+        let radioJson = req.body
+        radioJson.currentSong = _.pick(trackRes.body, ['id', 'name', 'popularity', 'artist', 'album', 'album', 'duration_ms'])
+        return Promise.resolve(radioJson)
+      }).then((radioJson) => {
+        let newRadio = new Radio(radioJson)
+        newRadio.save((err, savedRadio) => {
+          if (err) {
+            res.sendStatus(500)
+          }
+          res.json(savedRadio)
+          startRadio(newRadio)
+        })
+      })
+  })
+  .get((req, res, next) => {
+    Radio.find({}, (err, items) => {
       if (err) {
         res.sendStatus(500)
       }
-      res.sendStatus(200)
+      res.json(items)
     })
   })
-
-io.on('connection', (socket) => {
-  socket.emit('news', { hello: 'world' })
-  socket.on('my other event', (data) => {
-    console.log(data)
+  .delete((req, res, next) => {
+    // TODO: this.
+    // Radio.
   })
-})

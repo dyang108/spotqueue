@@ -31,12 +31,17 @@ class AddSongs extends Component {
     })
   }
 
-  searchForSongs () {
+  searchForSongs (tryNumber = 0) {
     var defaultAlbumArt = 'src/assets/unknown-album.png' // probably wanna change this later
     SpotifyModule.performSearchWithQuery(this.state.searchQuery, 'track', 0, 'US', (err, res) => {
       if (err) {
         console.log(err)
       } else {
+        if (res.length === 0 && tryNumber < 10) {
+          // sometimes the search doesnt work
+          this.searchForSongs(tryNumber + 1)
+          return
+        }
         let resultList = res.map((elem) => {
           let artists = ''
           elem.artists.forEach((artist, index) => {
@@ -66,7 +71,6 @@ class AddSongs extends Component {
   }
 
   addSong (songId) {
-    console.log(songId)
     if (!this.songSet.has(songId)) {
       this.songSet.add(songId)
       store.dispatch({
@@ -84,15 +88,17 @@ class AddSongs extends Component {
       },
       body: JSON.stringify(this.props.newPlaylist)
     }).then((res) => {
+      return res.json()
+    }).then((resJson) => {
       store.dispatch({
-        type: 'PLAYLIST_SAVED_TO_SERVER'
+        type: 'PLAYLIST_SAVED_TO_SERVER',
+        playlist: resJson
       })
       this.props.navigator.popToTop()
     })
   }
 
   render () {
-    const { navigator } = this.props
     return (
       <View style={{paddingTop: 10, paddingLeft: 20, paddingRight: 20, paddingBottom: 10}}>
         <WideButton style={{height: 40}} title='Done - Start playing' onPress={this.saveStation.bind(this)} />

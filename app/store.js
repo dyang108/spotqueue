@@ -63,7 +63,29 @@ const playlistSongReducer = function (state = [], action) {
   }
 }
 
-var playlistReducer = combineReducers({
+const allPlaylistReducer = function (state = [], action) {
+  switch (action.type) {
+    case 'GOT_ALL_PLAYLISTS':
+      return action.playlists
+    case 'PLAYLIST_SAVED_TO_SERVER':
+      return state.concat([action.playlist])
+    default:
+      return state
+  }
+}
+
+const nowPlayingReducer = function (state = '', action) {
+  switch (action.type) {
+    case 'RADIO_ON':
+      return action.radioId
+    case 'RADIO_OFF':
+      return ''
+    default:
+      return state
+  }
+}
+
+var playlistCreationReducer = combineReducers({
   title: playlistTitleReducer,
   songs: playlistSongReducer
 })
@@ -72,7 +94,9 @@ var reducers = combineReducers({
   user: userReducer,
   loginStatus: loginStatusReducer,
   spotifyStatus: spotifyLoginReducer,
-  newPlaylist: playlistReducer
+  newPlaylist: playlistCreationReducer,
+  playlists: allPlaylistReducer,
+  nowPlaying: nowPlayingReducer
 })
 
 export default createStore(reducers)

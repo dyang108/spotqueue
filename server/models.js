@@ -35,6 +35,8 @@ var User = mongoose.model('User', {
 var Radio = mongoose.model('Radio', {
   title: String,
   currentSong: Object,
+  // used to figure out where to start the radio from
+  currentSongStarted: Date,
   songs: [SongId],
   upNext: [SongId]
 })

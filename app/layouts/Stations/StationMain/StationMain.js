@@ -24,7 +24,6 @@ class StationMain extends Component {
 
   constructor (props) {
     super(props)
-    console.log('constructing')
     this.state = {
       playlists: (new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.props.playlists)
@@ -70,7 +69,8 @@ class StationMain extends Component {
     }).then((res) => {
       return res.json()
     }).then((res) => {
-      SpotifyModule.playURI('spotify:track:' + res.songs[0], (err) => {
+      // TODO: calculate start time for song
+      SpotifyModule.playURI('spotify:track:' + res.currentSong.id, (err) => {
         if (err) {
           console.log(err)
         } else {
@@ -78,10 +78,10 @@ class StationMain extends Component {
             type: 'RADIO_ON',
             radioId: stationId
           })
-          ws.addEventListener('next_song', (data) => {
-            console.log(data)
-          })
-          console.log(ws)
+          // ws.addEventListener('next_song', (data) => {
+          //   console.log(data)
+          // })
+          // console.log(ws)
         }
       })
     })
@@ -110,6 +110,28 @@ class StationMain extends Component {
 
   render () {
     const { navigator } = this.props
+    console.log('rendering', this.props)
+    var renderListElem = (rowData) => {
+      let icon = this.props.nowPlaying === rowData._id ? 'stop' : 'play'
+      return (
+        <View style={{flexDirection: 'row'}}>
+        <Image style={styles.albumArt} source={{uri: this.getAlbumArt(rowData)}} />
+        <View style={[styles.searchResult, styles.centerSecondary, {flexDirection: 'row'}]}>
+          <View style={{flex: 4}}>
+            <Text numberOfLines={1} style={styles.bold}>{rowData.title}</Text>
+          </View>
+          <View style={{flex: 1}}><IconButton style={{alignSelf: 'flex-end', borderWidth: 0, backgroundColor: 'transparent'}} icon={icon} onPress={() => {
+            if (this.props.nowPlaying !== rowData._id) {
+              this.playStation(rowData._id)
+            } else {
+              this.stopPlaying()
+            }
+          }} /></View>
+        </View>
+      </View>
+      )
+    }
+
     return (
       <View navigator={ navigator } style={ styles.profileView }>
         <WideButton onPress={
@@ -117,25 +139,7 @@ class StationMain extends Component {
               navigator.push({ title: 'Name Your Station', index: 1})
             }
           } title='Create Station'></WideButton>
-          <ListView dataSource={this.state.playlists} style={{marginTop: 15}} renderRow={rowData => {
-            return (
-              <View style={{flexDirection: 'row'}}>
-              <Image style={styles.albumArt} source={{uri: this.getAlbumArt(rowData)}} />
-              <View style={[styles.searchResult, styles.centerSecondary, {flexDirection: 'row'}]}>
-                <View style={{flex: 4}}>
-                  <Text numberOfLines={1} style={styles.bold}>{rowData.title}</Text>
-                </View>
-                <View style={{flex: 1}}><IconButton style={{alignSelf: 'flex-end', borderWidth: 0, backgroundColor: 'transparent'}} icon={this.props.nowPlaying === rowData._id ? 'stop' : 'play'} onPress={() => {
-                  if (this.props.nowPlaying !== rowData._id) {
-                    this.playStation(rowData._id)
-                  } else {
-                    this.stopPlaying()
-                  }
-                }} /></View>
-              </View>
-            </View>
-            )
-          }}>
+          <ListView dataSource={this.state.playlists} style={{marginTop: 15}} renderRow={renderListElem}>
           </ListView>
       </View>
     )

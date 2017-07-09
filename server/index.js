@@ -4,8 +4,8 @@ var spotApi = require('./spotify')
 var { app } = require('./socket')
 // standard dependencies
 var Promise = require('bluebird')
-var _ = require('lodash')
 var startRadio = require('./radioStart')
+var { pickTrackProps } = require('./helpers')
 
 // ALWAYS use userID, not objectID
 app.route('/user/:userID')
@@ -61,10 +61,12 @@ app.route('/radio/:id')
 
 app.route('/radio')
   .post((req, res, next) => {
+    // check if the radio already exists here...
+
     spotApi.getTrack(req.body.songs[0])
       .then((trackRes) => {
         let radioJson = req.body
-        radioJson.currentSong = _.pick(trackRes.body, ['id', 'name', 'popularity', 'artist', 'album', 'album', 'duration_ms'])
+        radioJson.currentSong = pickTrackProps(trackRes)
         return Promise.resolve(radioJson)
       }).then((radioJson) => {
         let newRadio = new Radio(radioJson)
@@ -86,6 +88,6 @@ app.route('/radio')
     })
   })
   .delete((req, res, next) => {
-    // TODO: this.
+    // TODO: this. on client too.
     // Radio.
   })

@@ -8,7 +8,6 @@ function getRandInd (count) {
 
 function nextSong (radio) {
   var goToNext = function () {
-    console.log('in function', radio)
     let nextSong = ''
     if (radio.upNext.length !== 0) {
       nextSong = radio.upNext.shift()
@@ -25,8 +24,9 @@ function nextSong (radio) {
           }
           console.log('success!', savedRadio)
           // TODO: send socket message
+
           // schedule the next song
-          startRadio(savedRadio)
+          startRadio(radio)
         })
       })
   }

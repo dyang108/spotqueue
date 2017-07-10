@@ -7,6 +7,10 @@ var Promise = require('bluebird')
 var startRadio = require('./radioStart')
 var { pickTrackProps } = require('./helpers')
 
+Radio.find({}).cursor().eachAsync((doc) => {
+  startRadio(doc)
+})
+
 // ALWAYS use userID, not objectID
 app.route('/user/:userID')
   .get((req, res, next) => {
@@ -67,6 +71,7 @@ app.route('/radio')
       .then((trackRes) => {
         let radioJson = req.body
         radioJson.currentSong = pickTrackProps(trackRes)
+        radioJson.currentSongStarted = new Date()
         return Promise.resolve(radioJson)
       }).then((radioJson) => {
         let newRadio = new Radio(radioJson)

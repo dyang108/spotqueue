@@ -4,8 +4,7 @@ Private radio stations to listen together even when afar.
 
 Also learning React and Redux with best practices along the way.
 
-Built using React Native, Redux, NodeJS, Express, MongoDB, Mongoose, Facebook SDK, Spotify API
-Will use: SocketIO
+Built using React Native, Redux, NodeJS, Express, MongoDB, Mongoose, Facebook SDK, Spotify API, Node-Cron, WebSockets
 
 ## Contributing
 ### Clone repo

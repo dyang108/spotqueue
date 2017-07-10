@@ -14,6 +14,7 @@ import IconButton from 'src/components/IconButton'
 import store from 'src/store'
 import _ from 'lodash'
 import ws from 'src/config/socket'
+import { getTimeElapsed } from 'src/assets/helpers'
 
 var SpotifyModule = NativeModules.SpotifyAuth
 
@@ -69,8 +70,9 @@ class StationMain extends Component {
     }).then((res) => {
       return res.json()
     }).then((res) => {
-      // TODO: calculate start time for song
-      SpotifyModule.playURI('spotify:track:' + res.currentSong.id, (err) => {
+      // calculate start time for song
+      let startTime = getTimeElapsed(res.currentSongStarted)
+      SpotifyModule.playURIs(['spotify:track:' + res.currentSong.id], {trackIndex :0, startTime }, (err) => {
         if (err) {
           console.log(err)
         } else {
@@ -110,7 +112,6 @@ class StationMain extends Component {
 
   render () {
     const { navigator } = this.props
-    console.log('rendering', this.props)
     var renderListElem = (rowData) => {
       let icon = this.props.nowPlaying === rowData._id ? 'stop' : 'play'
       return (

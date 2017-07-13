@@ -1,7 +1,7 @@
 var { User, Radio } = require('./models')
 // connection to spotify
 var spotApi = require('./spotify')
-var { app } = require('./socket')
+var { app } = require('./config')
 // standard dependencies
 var Promise = require('bluebird')
 var startRadio = require('./radioStart')
@@ -42,17 +42,23 @@ app.route('/user')
     })
   })
 
-app.route('/radio/:id')
+app.route('/radio/:id/:user')
   .get((req, res, next) => {
+    console.log(req.params.user)
     Radio.findOne({
       _id: req.params.id
-    }, (err, item) => {
+    }, (err, radio) => {
       if (err) {
         res.sendStatus(500)
       }
-      res.json(item)
+      radio.listening.push(req.params.user)
+      radio.save((err, savedRadio) => {
+        res.json(savedRadio)
+      })
     })
   })
+
+app.route('/radio/:id')
   .post((req, res, next) => {
     Radio
       .findByIdAndUpdate(req.params.id, req.body, (err, result) => {

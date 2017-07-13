@@ -17,6 +17,21 @@ import ws from 'src/config/socket'
 import { getTimeElapsed } from 'src/assets/helpers'
 
 var SpotifyModule = NativeModules.SpotifyAuth
+ws.onmessage = (msg) => {
+  let song = JSON.parse(msg)
+  // TODO: handle the new song
+  SpotifyModule.playURI('spotify:track:' + song.id, (err) => {
+    console.log('Playing', res.currentSong.name)
+    if (err) {
+      console.log(err)
+    } else {
+      store.dispatch({
+        type: 'RADIO_ON',
+        radioId: stationId
+      })
+    }
+  })
+}
 
 class StationMain extends Component {
   static propTypes = {
@@ -62,7 +77,7 @@ class StationMain extends Component {
   }
 
   playStation (stationId) {
-    fetch(process.env.API_URL + '/radio/' + stationId, {
+    fetch(process.env.API_URL + '/radio/' + stationId + '/' + this.props.user.userID, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -73,6 +88,7 @@ class StationMain extends Component {
       // calculate start time for song
       let startTime = getTimeElapsed(res.currentSongStarted)
       SpotifyModule.playURIs(['spotify:track:' + res.currentSong.id], {trackIndex :0, startTime }, (err) => {
+        console.log('Playing', res.currentSong.name)
         if (err) {
           console.log(err)
         } else {
@@ -80,16 +96,13 @@ class StationMain extends Component {
             type: 'RADIO_ON',
             radioId: stationId
           })
-          // ws.addEventListener('next_song', (data) => {
-          //   console.log(data)
-          // })
-          // console.log(ws)
         }
       })
     })
   }
 
   stopPlaying () {
+    // TODO: send a message to server to say that were not listening
     SpotifyModule.setIsPlaying(false, (err) => {
       if (err) {
         console.log(err)
@@ -150,7 +163,8 @@ class StationMain extends Component {
 const mapStateToProps = (store) => {
   return {
     playlists: store.playlists,
-    nowPlaying: store.nowPlaying
+    nowPlaying: store.nowPlaying,
+    user: store.user
   }
 }
 

@@ -30,17 +30,6 @@ const loginStatusReducer = function (state = 'load', action) {
   }
 }
 
-const spotifyLoginReducer = function (state = false, action) {
-  switch (action.type) {
-    case 'SPOTIFY_LOGIN':
-      return true
-    case 'SPOTIFY_LOGOUT':
-      return false
-    default:
-      return state
-  }
-}
-
 const playlistTitleReducer = function (state = '', action) {
   switch (action.type) {
     case 'PLAYLIST_TITLE':
@@ -93,7 +82,6 @@ var playlistCreationReducer = combineReducers({
 var reducers = combineReducers({
   user: userReducer,
   loginStatus: loginStatusReducer,
-  spotifyStatus: spotifyLoginReducer,
   newPlaylist: playlistCreationReducer,
   playlists: allPlaylistReducer,
   nowPlaying: nowPlayingReducer

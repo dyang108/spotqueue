@@ -105,7 +105,7 @@ class AddSongs extends Component {
         <Text style={[styles.bold, {marginTop: 10}]}>Add songs to "{this.props.newPlaylist.title}"</Text>
         <View style={{flexDirection: 'row'}}>
           <TextInput value={this.state.searchQuery} onChangeText={this.updateField.bind(this)} style={styles.inputLine} />
-          <IconButton icon='search' disabled={!this.props.spotifyLoggedIn} onPress={this.searchForSongs.bind(this)} />
+          <IconButton icon='search' disabled={!SpotifyModule.loggedIn} onPress={this.searchForSongs.bind(this)} />
         </View>
         <ListView style={{marginTop: 10, paddingTop: 10, height: 400}} enableEmptySections dataSource={this.state.results} renderRow={(rowData, sectionID) => {
           return (
@@ -132,8 +132,7 @@ class AddSongs extends Component {
 
 const mapStateToProps = (store) => {
   return {
-    newPlaylist: store.newPlaylist,
-    spotifyLoggedIn: store.spotifyStatus
+    newPlaylist: store.newPlaylist
   }
 }
 

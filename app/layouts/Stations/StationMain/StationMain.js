@@ -18,7 +18,8 @@ import { getTimeElapsed } from 'src/assets/helpers'
 
 var SpotifyModule = NativeModules.SpotifyAuth
 ws.onmessage = (msg) => {
-  let song = JSON.parse(msg)
+  console.log(msg, msg.data)
+  let song = JSON.parse(msg.data)
   // TODO: handle the new song
   SpotifyModule.playURI('spotify:track:' + song.id, (err) => {
     console.log('Playing', res.currentSong.name)

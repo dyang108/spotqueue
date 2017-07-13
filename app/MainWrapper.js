@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import {
   View,
-  AsyncStorage
+  AsyncStorage,
+  NativeModules
 } from 'react-native'
 import { connect } from 'react-redux'
 import MainView from './MainView'
@@ -9,6 +10,7 @@ import store from './store'
 import ws from 'src/config/socket'
 
 const USERID = '@AsyncStore:USERID'
+var SpotifyAuth = NativeModules.SpotifyAuth
 
 class MainWrapperClass extends Component {
   componentDidMount () {
@@ -18,6 +20,17 @@ class MainWrapperClass extends Component {
   findUser () {
     // For mistakes when I removed the database instance first
     // AsyncStorage.removeItem(USERID)
+    SpotifyAuth.loggedIn(res => {
+      if (res === true) {
+        store.dispatch({
+          type: 'SPOTIFY_LOGIN'
+        })
+      } else {
+        store.dispatch({
+          type: 'SPOTIFY_LOGOUT'
+        })
+      }
+    })
     this._loadInitialState()
       .then((userID) => {
         if (userID !== null) {

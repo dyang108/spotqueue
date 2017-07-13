@@ -18,18 +18,10 @@ import { getTimeElapsed } from 'src/assets/helpers'
 
 var SpotifyModule = NativeModules.SpotifyAuth
 ws.onmessage = (msg) => {
-  console.log(msg, msg.data)
   let song = JSON.parse(msg.data)
-  // TODO: handle the new song
   SpotifyModule.playURI('spotify:track:' + song.id, (err) => {
-    console.log('Playing', res.currentSong.name)
     if (err) {
       console.log(err)
-    } else {
-      store.dispatch({
-        type: 'RADIO_ON',
-        radioId: stationId
-      })
     }
   })
 }
@@ -43,7 +35,8 @@ class StationMain extends Component {
     super(props)
     this.state = {
       playlists: (new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.props.playlists)
+        rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.props.playlists),
+      nowPlaying: this.props.nowPlaying
     }
     this.getPlaylists()
   }
@@ -89,13 +82,15 @@ class StationMain extends Component {
       // calculate start time for song
       let startTime = getTimeElapsed(res.currentSongStarted)
       SpotifyModule.playURIs(['spotify:track:' + res.currentSong.id], {trackIndex :0, startTime }, (err) => {
-        console.log('Playing', res.currentSong.name)
         if (err) {
           console.log(err)
         } else {
           store.dispatch({
             type: 'RADIO_ON',
             radioId: stationId
+          })
+          this.setState({
+            nowPlaying: stationId
           })
         }
       })
@@ -127,7 +122,7 @@ class StationMain extends Component {
   render () {
     const { navigator } = this.props
     var renderListElem = (rowData) => {
-      let icon = this.props.nowPlaying === rowData._id ? 'stop' : 'play'
+      let icon = this.state.nowPlaying === rowData._id ? 'stop' : 'play'
       return (
         <View style={{flexDirection: 'row'}}>
         <Image style={styles.albumArt} source={{uri: this.getAlbumArt(rowData)}} />
@@ -136,7 +131,7 @@ class StationMain extends Component {
             <Text numberOfLines={1} style={styles.bold}>{rowData.title}</Text>
           </View>
           <View style={{flex: 1}}><IconButton style={{alignSelf: 'flex-end', borderWidth: 0, backgroundColor: 'transparent'}} icon={icon} onPress={() => {
-            if (this.props.nowPlaying !== rowData._id) {
+            if (this.state.nowPlaying !== rowData._id) {
               this.playStation(rowData._id)
             } else {
               this.stopPlaying()

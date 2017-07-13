@@ -44,7 +44,6 @@ app.route('/user')
 
 app.route('/radio/:id/:user')
   .get((req, res, next) => {
-    console.log(req.params.user)
     Radio.findOne({
       _id: req.params.id
     }, (err, radio) => {

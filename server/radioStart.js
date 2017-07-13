@@ -23,7 +23,6 @@ function getRandInd (count) {
 
 function nextSong (radio) {
   var goToNext = function () {
-    console.log('going to next song')
     let nextSong = ''
     if (radio.upNext.length !== 0) {
       nextSong = radio.upNext.shift()
@@ -40,9 +39,7 @@ function nextSong (radio) {
           if (err) {
             console.error(err)
           }
-          console.log('success!', savedRadio)
           savedRadio.listening.forEach((userId) => {
-            console.log(userId, clients[userId])
             clients[userId].send(JSON.stringify(savedRadio.currentSong))
           })
           // TODO: send socket message
@@ -58,7 +55,6 @@ function nextSong (radio) {
 }
 
 function startRadio (radio) {
-  console.log('starting radio', radio)
   let dateObj = Date.now()
   dateObj += radio.currentSong.duration_ms
   let cronTime = new Date(dateObj)

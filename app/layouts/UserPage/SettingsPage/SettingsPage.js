@@ -47,7 +47,6 @@ class SettingsPage extends React.Component {
     this.state.user = this.props.user
     this.state.editedUser = this.props.user
     this.state.navigator = this.props.navigator
-
   }
 
   save (user) {
@@ -86,13 +85,23 @@ class SettingsPage extends React.Component {
         if (error){
           console.log(error)
         } else {
-          console.log('success!')
+          console.log('success')
+          store.dispatch({
+            type: 'SPOTIFY_LOGIN'
+          })
         }
       })
   }
 
   spotifyLogout () {
     SpotifyAuth.logout()
+    SpotifyAuth.loggedIn(res => {
+      if (res === false) {
+        store.dispatch({
+          type: 'SPOTIFY_LOGOUT'
+        })
+      }
+    })
   }
 
   // function used to change the value in the state (this is what
@@ -117,7 +126,7 @@ class SettingsPage extends React.Component {
         <View style={ styles.hr }></View>
         <View style={ styles.center, styles.centerSecondary }><Text style={{fontSize: 15}}>Connect to Spotify <Icon size={15} name='spotify'></Icon></Text></View>
         <View style={styles.verticalSpace} />
-        <WideButton style={ styles.wideButton } onPress={ SpotifyAuth.loggedIn ? this.spotifyLogout : this.spotifyLogin } title={ SpotifyAuth.loggedIn ? 'Already Logged In - Log Out.' : 'Log In' } color='#2ebd59' fontColor='#fff'></WideButton>
+        <WideButton style={ styles.wideButton } onPress={ this.props.spotifyLoggedIn ? this.spotifyLogout : this.spotifyLogin } title={ this.props.spotifyLoggedIn ? 'Already Logged In - Log Out.' : 'Log In' } color='#2ebd59' fontColor='#fff'></WideButton>
         <View style={styles.hr} />
         <View style={ styles.center, styles.centerSecondary }><LoginButton onLogoutFinished={() => {
           AsyncStorage.removeItem('@AsyncStore:USERID')
@@ -132,7 +141,8 @@ class SettingsPage extends React.Component {
 
 const mapStateToProps = (store) => {
   return {
-    user: store.user
+    user: store.user,
+    spotifyLoggedIn: store.spotifyStatus
   }
 }
 

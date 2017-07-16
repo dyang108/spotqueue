@@ -1,4 +1,4 @@
-var { User, Radio } = require('./models')
+var { User, Radio, Listening } = require('./models')
 // connection to spotify
 var spotApi = require('./spotify')
 var { app } = require('./config')
@@ -11,12 +11,13 @@ Radio.find({}).cursor().eachAsync((doc) => {
   startRadio(doc)
 })
 
-// ALWAYS use userID, not objectID
-app.route('/user/:userID')
+// ALWAYS use userId, not objectId
+app.route('/user/:userId')
   .get((req, res, next) => {
-    User.findOne({ userID: req.params.userID }, (err, item) => {
+    User.findOne({ userId: req.params.userId }, (err, item) => {
       if (err) {
         res.sendStatus(500)
+        return
       }
       res.json(item)
     })
@@ -26,6 +27,7 @@ app.route('/user/:userID')
       .findOneAndUpdate({ username: req.params.username }, req.body, {new: true}, (err, userObj) => {
         if (err) {
           res.sendStatus(500)
+          return
         }
         res.json(userObj)
       })
@@ -37,6 +39,7 @@ app.route('/user')
     newUser.save((err, userObj) => {
       if (err) {
         res.sendStatus(500)
+        return
       }
       res.json(userObj)
     })
@@ -49,10 +52,46 @@ app.route('/radio/:id/:user')
     }, (err, radio) => {
       if (err) {
         res.sendStatus(500)
+        return
       }
-      radio.listening.push(req.params.user)
-      radio.save((err, savedRadio) => {
-        res.json(savedRadio)
+      Listening.findOne({
+        userId: req.params.user
+      }, (err, listen) => {
+        if (err) {
+          res.sendStatus(500)
+          return
+        }
+        if (!listen) {
+          listen = new Listening({
+            userId: req.params.user,
+            radioId: req.params.id
+          })
+        } else {
+          listen.radioId = radio._id
+        }
+        listen.save((err) => {
+          if (err) {
+            res.sendStatus(500)
+            return
+          }
+          res.json(radio)
+        })
+      })
+    })
+  })
+
+app.route('/stop/:id/:user')
+  .get((req, res, next) => {
+    Listening.findOne({
+      userId: req.params.user
+    }, (err, listen) => {
+      if (err) {
+        res.sendStatus(500)
+        return
+      }
+      listen.radioId = 'none'
+      listen.save((err) => {
+        res.sendStatus(200)
       })
     })
   })
@@ -63,6 +102,7 @@ app.route('/radio/:id')
       .findByIdAndUpdate(req.params.id, req.body, (err, result) => {
         if (err) {
           res.sendStatus(500)
+          return
         }
         res.sendStatus(200)
       })
@@ -93,6 +133,7 @@ app.route('/radio')
     Radio.find({}, (err, items) => {
       if (err) {
         res.sendStatus(500)
+        return
       }
       res.json(items)
     })

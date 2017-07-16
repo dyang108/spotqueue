@@ -12,7 +12,7 @@ import GraphPromise from 'src/config/graph'
 import Promise from 'bluebird'
 
 export default class Login extends Component {
-  createNewUser (userID, accessToken) {
+  createNewUser (userId, accessToken) {
     return Promise.props({
       graph: GraphPromise('/me', accessToken, {
         fields: {
@@ -33,7 +33,7 @@ export default class Login extends Component {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            userID: userID,
+            userId: userId,
             firstName: res.graph.first_name,
             lastName: res.graph.last_name,
             photoUrl: res.photo.picture.data.url,
@@ -55,7 +55,7 @@ export default class Login extends Component {
               } else if (result.isCancelled) {
                 console.log('Login cancelled.')
               } else {
-                var userID, accessToken
+                var userId, accessToken
                 store.dispatch({
                   type: 'LOGIN_LOADING'
                 })
@@ -64,8 +64,8 @@ export default class Login extends Component {
                     accessToken = data.accessToken.toString()
 
                     // check if the user exists
-                    userID = data.userID
-                    return fetch(process.env.API_URL + '/user/' + userID)
+                    userId = data.userID
+                    return fetch(process.env.API_URL + '/user/' + userId)
                   })
                   .then((res) => {
                     return res.json()
@@ -76,7 +76,7 @@ export default class Login extends Component {
                     // practices, man.
                     if (resJson === null) {
                       // if the user doesn't exist, then create it
-                      return this.createNewUser(userID, accessToken)
+                      return this.createNewUser(userId, accessToken)
                     } else {
                       // if the user does exist, continue
                       return Promise.resolve(resJson)
@@ -87,7 +87,7 @@ export default class Login extends Component {
                       throw new Error({msg: 'Creating new user went wrong.'})
                     }
                     try {
-                      AsyncStorage.setItem('@AsyncStore:USERID', userID)
+                      AsyncStorage.setItem('@AsyncStore:USERID', userId)
                     } catch (err) {
                       console.log(err)
                     }

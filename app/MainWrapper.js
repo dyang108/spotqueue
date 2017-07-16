@@ -32,9 +32,9 @@ class MainWrapperClass extends Component {
       }
     })
     this._loadInitialState()
-      .then((userID) => {
-        if (userID !== null) {
-          fetch(process.env.API_URL + '/user/' + userID)
+      .then((userId) => {
+        if (userId !== null) {
+          fetch(process.env.API_URL + '/user/' + userId)
             .then((res) => {
               return res.json()
             })
@@ -44,7 +44,7 @@ class MainWrapperClass extends Component {
                 user: user
               })
               ws.send(JSON.stringify({
-                userID,
+                userId,
                 type: 'USERID'
               }))
             })
@@ -60,7 +60,7 @@ class MainWrapperClass extends Component {
     try {
       return await AsyncStorage.getItem(USERID)
     } catch (error) {
-      console.log('Error getting userID: ' + error)
+      console.log('Error getting userId: ' + error)
       return null
     }
   }

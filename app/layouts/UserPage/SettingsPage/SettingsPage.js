@@ -51,7 +51,7 @@ class SettingsPage extends React.Component {
 
   save (user) {
     return function () {
-      fetch(process.env.API_URL + '/user/' + user.userID, {
+      fetch(process.env.API_URL + '/user/' + user.userId, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

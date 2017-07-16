@@ -22,10 +22,9 @@ Schemas
 
 var User = mongoose.model('User', {
   // should be identical to the Facebook userID from the SDK
-  userID: { type: String, unique: true },
+  userId: { type: String, unique: true },
   bio: String,
   friends: [String],
-  currentRadio: Schema.Types.ObjectId,
   firstName: String,
   lastName: String,
   gender: String,
@@ -38,11 +37,16 @@ var Radio = mongoose.model('Radio', {
   // used to figure out where to start the radio from
   currentSongStarted: Date,
   songs: [SongId],
-  upNext: [SongId],
-  listening: [{ type: String }]
+  upNext: [SongId]
+})
+
+var Listening = mongoose.model('Listening', {
+  userId: { type: String, unique: true },
+  radioId: Schema.Types.ObjectId
 })
 
 module.exports = {
   User,
-  Radio
+  Radio,
+  Listening
 }

@@ -4,16 +4,15 @@ var { pickTrackProps } = require('./helpers')
 var { server } = require('./config')
 const WebSocket = require('ws')
 var clients = {}
+var { Listening } = require('./models')
 
 const socket = new WebSocket.Server({server})
 socket.on('connection', function connection (ws) {
   ws.on('message', function incoming (message) {
     let msgobj = JSON.parse(message)
     if (msgobj.type === 'USERID') {
-      clients[msgobj.userID] = ws
+      clients[msgobj.userId] = ws
     }
-    console.log(clients)
-    console.log('received: %s', message)
   })
 })
 
@@ -33,20 +32,27 @@ function nextSong (radio) {
     // Also: get all tracks at once?
     spotApi.getTrack(nextSong)
       .then((trackRes) => {
-        radio.currentSongStarted = new Date()
         radio.currentSong = pickTrackProps(trackRes)
         radio.save((err, savedRadio) => {
           if (err) {
             console.error(err)
           }
-          savedRadio.listening.forEach((userId) => {
-            clients[userId].send(JSON.stringify(savedRadio.currentSong))
+          Listening.find({
+            radioId: savedRadio._id
+          }, (err, listens) => {
+            if (err) {
+              // better error handling would be good
+              console.error(err)
+              return
+            }
+            listens.forEach((listen) => {
+              if (!clients[listen.userId]) {
+                return
+              }
+              // make sure you reload the client when you restart the server, in order to get the websocket connection back
+              clients[listen.userId].send(JSON.stringify(savedRadio.currentSong))
+            })
           })
-          // TODO: send socket message
-          // socket.send(radio, {}, (thing) => {
-          //   console.log('hi', thing)
-          // })
-          // schedule the next song
           startRadio(radio)
         })
       })
@@ -57,6 +63,8 @@ function nextSong (radio) {
 function startRadio (radio) {
   let dateObj = Date.now()
   dateObj += radio.currentSong.duration_ms
+  radio.currentSongStarted = new Date()
+  radio.save()
   let cronTime = new Date(dateObj)
   let job = new CronJob({
     cronTime,

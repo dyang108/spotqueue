@@ -101,7 +101,7 @@ class AddSongs extends Component {
   render () {
     return (
       <View style={{paddingTop: 10, paddingLeft: 20, paddingRight: 20, paddingBottom: 10}}>
-        <WideButton style={{height: 40}} title='Done - Start playing' onPress={this.saveStation.bind(this)} />
+        <WideButton style={{height: 40}} title='Done' onPress={this.saveStation.bind(this)} />
         <Text style={[styles.bold, {marginTop: 10}]}>Add songs to "{this.props.newPlaylist.title}"</Text>
         <View style={{flexDirection: 'row'}}>
           <TextInput value={this.state.searchQuery} onChangeText={this.updateField.bind(this)} style={styles.inputLine} />

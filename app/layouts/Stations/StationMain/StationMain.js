@@ -17,14 +17,6 @@ import ws from 'src/config/socket'
 import { getTimeElapsed } from 'src/assets/helpers'
 
 var SpotifyModule = NativeModules.SpotifyAuth
-ws.onmessage = (msg) => {
-  let song = JSON.parse(msg.data)
-  SpotifyModule.playURI('spotify:track:' + song.id, (err) => {
-    if (err) {
-      console.log(err)
-    }
-  })
-}
 
 class StationMain extends Component {
   static propTypes = {
@@ -38,13 +30,21 @@ class StationMain extends Component {
         rowHasChanged: (r1, r2) => r1 !== r2 })).cloneWithRows(this.props.playlists),
       nowPlaying: this.props.nowPlaying
     }
+    ws.onmessage = (msg) => {
+      let song = JSON.parse(msg.data)
+      SpotifyModule.playURIs(['spotify:track:' + song.id], { trackIndex :0, startTime: 0 }, (err) => {
+        if (err) {
+          console.log(err)
+        }
+      })
+    }
     this.getPlaylists()
   }
 
   componentWillReceiveProps (props) {
-    this.state = {
+    this.setState({
       playlists: this.state.playlists.cloneWithRows(props.playlists)
-    }
+    })
   }
 
   getPlaylists() {
@@ -71,42 +71,73 @@ class StationMain extends Component {
   }
 
   playStation (stationId) {
-    fetch(process.env.API_URL + '/radio/' + stationId + '/' + this.props.user.userID, {
+    let startPlaying = () => {
+      console.log('trying to start play')
+      fetch(process.env.API_URL + '/radio/' + stationId + '/' + this.props.user.userId, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then((res) => {
+        return res.json()
+      }).then((res) => {
+        console.log('got radio', res)
+        // calculate start time for song
+        let startTime = getTimeElapsed(res.currentSongStarted)
+        SpotifyModule.playURIs(['spotify:track:' + res.currentSong.id], { trackIndex :0, startTime }, (err) => {
+          if (err) {
+            console.log(err)
+          } else {
+            store.dispatch({
+              type: 'RADIO_ON',
+              radioId: stationId
+            })
+            this.setState({
+              nowPlaying: stationId
+            })
+          }
+        })
+      })
+    }
+    if (!!this.state.nowPlaying && stationId !== this.state.nowPlaying) {
+      this.pause().then((res) => {
+        if (res.status !== 200) {
+          console.error('something went wrong on pause')
+        }
+        startPlaying()
+      })
+    } else {
+      startPlaying()
+    }
+  }
+
+  pause () {
+    return fetch(process.env.API_URL + '/stop/' + this.state.nowPlaying + '/' + this.props.user.userId, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then((res) => {
-      return res.json()
-    }).then((res) => {
-      // calculate start time for song
-      let startTime = getTimeElapsed(res.currentSongStarted)
-      SpotifyModule.playURIs(['spotify:track:' + res.currentSong.id], {trackIndex :0, startTime }, (err) => {
-        if (err) {
-          console.log(err)
-        } else {
-          store.dispatch({
-            type: 'RADIO_ON',
-            radioId: stationId
-          })
-          this.setState({
-            nowPlaying: stationId
-          })
-        }
-      })
     })
   }
 
   stopPlaying () {
-    // TODO: send a message to server to say that were not listening
-    SpotifyModule.setIsPlaying(false, (err) => {
-      if (err) {
-        console.log(err)
-      } else {
-        store.dispatch({
-          type: 'RADIO_OFF'
-        })
+    this.pause().then((res) => {
+      if (res.status !== 200) {
+        console.error('something went wrong on pause')
       }
+      console.log(res)
+      SpotifyModule.setIsPlaying(false, (err) => {
+        if (err) {
+          console.log(err)
+        } else {
+          store.dispatch({
+            type: 'RADIO_OFF'
+          })
+          this.setState({
+            nowPlaying: 'none'
+          })
+        }
+      })
     })
   }
 
@@ -122,7 +153,6 @@ class StationMain extends Component {
   render () {
     const { navigator } = this.props
     var renderListElem = (rowData) => {
-      let icon = this.state.nowPlaying === rowData._id ? 'stop' : 'play'
       return (
         <View style={{flexDirection: 'row'}}>
         <Image style={styles.albumArt} source={{uri: this.getAlbumArt(rowData)}} />
@@ -130,7 +160,7 @@ class StationMain extends Component {
           <View style={{flex: 4}}>
             <Text numberOfLines={1} style={styles.bold}>{rowData.title}</Text>
           </View>
-          <View style={{flex: 1}}><IconButton style={{alignSelf: 'flex-end', borderWidth: 0, backgroundColor: 'transparent'}} icon={icon} onPress={() => {
+          <View style={{flex: 1}}><IconButton style={{alignSelf: 'flex-end', borderWidth: 0, backgroundColor: 'transparent'}} icon={this.state.nowPlaying === rowData._id ? 'stop' : 'play'} onPress={() => {
             if (this.state.nowPlaying !== rowData._id) {
               this.playStation(rowData._id)
             } else {

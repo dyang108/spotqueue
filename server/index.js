@@ -23,14 +23,13 @@ app.route('/user/:userId')
     })
   })
   .post((req, res, next) => {
-    User
-      .findOneAndUpdate({ username: req.params.username }, req.body, {new: true}, (err, userObj) => {
-        if (err) {
-          res.sendStatus(500)
-          return
-        }
-        res.json(userObj)
-      })
+    User.findOneAndUpdate({ username: req.params.username }, req.body, {new: true}, (err, userObj) => {
+      if (err) {
+        res.sendStatus(500)
+        return
+      }
+      res.json(userObj)
+    })
   })
 
 app.route('/user')
@@ -89,34 +88,66 @@ app.route('/stop/:id/:user')
         res.sendStatus(500)
         return
       }
-      listen.radioId = 'none'
+      listen.radioId = null
       listen.save((err) => {
+        if (err) {
+          console.log(err)
+          res.sendStatus(500)
+          return
+        }
         res.sendStatus(200)
+      })
+    })
+  })
+
+app.route('/queue')
+  .post((req, res, next) => {
+    Radio.findOne({
+      _id: req.body.radioId
+    }, (err, radio) => {
+      if (err) {
+        console.log(err)
+        res.sendStatus(500)
+        return
+      }
+      if (!radio.upNext) {
+        radio.upNext = []
+      }
+      radio.upNext.push(req.body.songId)
+      radio.save((err, savedRadio) => {
+        if (err) {
+          res.sendStatus(500)
+          return
+        }
+        res.json(savedRadio)
       })
     })
   })
 
 app.route('/radio/:id')
   .post((req, res, next) => {
-    Radio
-      .findByIdAndUpdate(req.params.id, req.body, (err, result) => {
-        if (err) {
-          res.sendStatus(500)
-          return
-        }
-        res.sendStatus(200)
-      })
+    Radio.findByIdAndUpdate(req.params.id, req.body, (err, result) => {
+      if (err) {
+        res.sendStatus(500)
+        return
+      }
+      res.sendStatus(200)
+    })
   })
 
 app.route('/radio')
   .post((req, res, next) => {
+    if (req.body.songs.length === 0) {
+      res.sendStatus(300)
+      return
+    }
     // check if the radio already exists here...
-
     spotApi.getTrack(req.body.songs[0])
       .then((trackRes) => {
         let radioJson = req.body
         radioJson.currentSong = pickTrackProps(trackRes)
         radioJson.currentSongStarted = new Date()
+        radioJson.upNext = []
         return Promise.resolve(radioJson)
       }).then((radioJson) => {
         let newRadio = new Radio(radioJson)

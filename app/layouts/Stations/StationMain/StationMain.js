@@ -72,7 +72,6 @@ class StationMain extends Component {
 
   playStation (stationId) {
     let startPlaying = () => {
-      console.log('trying to start play')
       fetch(process.env.API_URL + '/radio/' + stationId + '/' + this.props.user.userId, {
         method: 'GET',
         headers: {
@@ -81,7 +80,6 @@ class StationMain extends Component {
       }).then((res) => {
         return res.json()
       }).then((res) => {
-        console.log('got radio', res)
         // calculate start time for song
         let startTime = getTimeElapsed(res.currentSongStarted)
         SpotifyModule.playURIs(['spotify:track:' + res.currentSong.id], { trackIndex :0, startTime }, (err) => {
@@ -125,7 +123,6 @@ class StationMain extends Component {
       if (res.status !== 200) {
         console.error('something went wrong on pause')
       }
-      console.log(res)
       SpotifyModule.setIsPlaying(false, (err) => {
         if (err) {
           console.log(err)
@@ -134,7 +131,7 @@ class StationMain extends Component {
             type: 'RADIO_OFF'
           })
           this.setState({
-            nowPlaying: 'none'
+            nowPlaying: null
           })
         }
       })
@@ -171,18 +168,26 @@ class StationMain extends Component {
       </View>
       )
     }
-
-    return (
-      <View navigator={ navigator } style={ styles.profileView }>
-        <WideButton onPress={
-            function () {
-              navigator.push({ title: 'Name Your Station', index: 1})
-            }
-          } title='Create Station'></WideButton>
-          <ListView dataSource={this.state.playlists} style={{marginTop: 15}} renderRow={renderListElem}>
-          </ListView>
-      </View>
-    )
+    if (this.props.spotifyLoggedIn) {
+      return (
+        <View navigator={ navigator } style={ styles.profileView }>
+          <WideButton onPress={
+              function () {
+                navigator.push({ title: 'Name Your Station', index: 1})
+              }
+            } title='Create Station'></WideButton>
+            <ListView dataSource={this.state.playlists} style={{marginTop: 15}} renderRow={renderListElem}>
+            </ListView>
+        </View>
+      )
+    } else {
+      return (
+        <View style={[styles.center, styles.container]}>
+          <Text style={styles.bold}>You are not logged in to Spotify.</Text>
+          <Text style={styles.bold}>Login in Settings.</Text>
+        </View>
+      )
+    }
   }
 }
 
@@ -190,7 +195,8 @@ const mapStateToProps = (store) => {
   return {
     playlists: store.playlists,
     nowPlaying: store.nowPlaying,
-    user: store.user
+    user: store.user,
+    spotifyLoggedIn: store.spotifyStatus 
   }
 }
 

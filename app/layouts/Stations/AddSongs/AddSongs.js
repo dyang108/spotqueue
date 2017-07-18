@@ -4,7 +4,6 @@ import {
   TextInput,
   ListView,
   View,
-  NativeModules,
   Image
 } from 'react-native'
 import { connect } from 'react-redux'
@@ -12,8 +11,7 @@ import WideButton from 'src/components/WideButton'
 import IconButton from 'src/components/IconButton'
 import styles from 'src/config/styles'
 import store from 'src/store'
-
-var SpotifyModule = NativeModules.SpotifyAuth
+import { searchForSongs } from 'src/assets/helpers.js'
 
 class AddSongs extends Component {
   constructor (props) {
@@ -28,45 +26,6 @@ class AddSongs extends Component {
   updateField (text) {
     this.setState({
       searchQuery: text
-    })
-  }
-
-  searchForSongs (tryNumber = 0) {
-    var defaultAlbumArt = 'src/assets/unknown-album.png' // probably wanna change this later
-    SpotifyModule.performSearchWithQuery(this.state.searchQuery, 'track', 0, 'US', (err, res) => {
-      if (err) {
-        console.log(err)
-      } else {
-        if (res.length === 0 && tryNumber < 10) {
-          // sometimes the search doesnt work
-          this.searchForSongs(tryNumber + 1)
-          return
-        }
-        let resultList = res.map((elem) => {
-          let artists = ''
-          elem.artists.forEach((artist, index) => {
-            artists += artist.name
-            if (index !== elem.artists.length - 1) {
-              artists += ', '
-            }
-          })
-
-          return {
-            name: elem.name,
-            id: elem.id,
-            popularity: elem.popularity,
-            // href: elem.href,
-            artist: artists,
-            album: elem.album.name,
-            albumArt: (elem.album.images && elem.album.images.length !== 0) ? elem.album.images[0].url : defaultAlbumArt,
-            hasAdded: false
-            // whether or not it has been added to the playlist
-          }
-        })
-        this.setState({
-          results: this.state.results.cloneWithRows(resultList)
-        })
-      }
     })
   }
 
@@ -105,7 +64,7 @@ class AddSongs extends Component {
         <Text style={[styles.bold, {marginTop: 10}]}>Add songs to "{this.props.newPlaylist.title}"</Text>
         <View style={{flexDirection: 'row'}}>
           <TextInput value={this.state.searchQuery} onChangeText={this.updateField.bind(this)} style={styles.inputLine} />
-          <IconButton icon='search' disabled={!this.props.spotifyLoggedIn} onPress={this.searchForSongs.bind(this)} />
+          <IconButton icon='search' disabled={!this.props.spotifyLoggedIn} onPress={searchForSongs.bind(this)} />
         </View>
         <ListView style={{marginTop: 10, paddingTop: 10, height: 400}} enableEmptySections dataSource={this.state.results} renderRow={(rowData, sectionID) => {
           return (

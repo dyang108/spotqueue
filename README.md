@@ -11,8 +11,11 @@ Built using React Native, Redux, NodeJS, Express, MongoDB, Mongoose, Facebook SD
     git clone https://github.com/dyang108/spotqueue.git
 ### Install dependencies
     npm install
+### Start the database
+    mongod
 ### Run server
-    nodemon server/index.js
+    cd server
+    nodemon index.js
 ### Start app with environment variables
     API_URL='http://localhost:8000' npm start
 
@@ -21,7 +24,7 @@ Built using React Native, Redux, NodeJS, Express, MongoDB, Mongoose, Facebook SD
 This project follows [standard](https://github.com/feross/standard) style.
 
 ## Best Practices
-* break up styles file (**TODO**)
+* break up styles file
 * use style constants (**TODO**)
 * redux
   * presentational components do *not* `connect()`

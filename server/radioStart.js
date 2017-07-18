@@ -4,7 +4,7 @@ var { pickTrackProps } = require('./helpers')
 var { server } = require('./config')
 const WebSocket = require('ws')
 var clients = {}
-var { Listening } = require('./models')
+var { Listening, Radio } = require('./models')
 
 const socket = new WebSocket.Server({server})
 socket.on('connection', function connection (ws) {
@@ -20,42 +20,50 @@ function getRandInd (count) {
   return Math.floor(Math.random() * count)
 }
 
-function nextSong (radio) {
+function nextSong (r) {
   var goToNext = function () {
-    let nextSong = ''
-    if (radio.upNext.length !== 0) {
-      nextSong = radio.upNext.shift()
-    } else {
-      nextSong = radio.songs[getRandInd(radio.songs.length)]
-    }
-    // TODO: cache tracks instead of querying API every time
-    // Also: get all tracks at once?
-    spotApi.getTrack(nextSong)
-      .then((trackRes) => {
-        radio.currentSong = pickTrackProps(trackRes)
-        radio.save((err, savedRadio) => {
-          if (err) {
-            console.error(err)
-          }
-          Listening.find({
-            radioId: savedRadio._id
-          }, (err, listens) => {
+    Radio.findOne({
+      _id: r._id
+    }, function (err, radio) {
+      if (err) {
+        console.log(err)
+        return
+      }
+      let nextSong = ''
+      if (radio.upNext.length !== 0) {
+        nextSong = radio.upNext.shift()
+      } else {
+        nextSong = radio.songs[getRandInd(radio.songs.length)]
+      }
+      // TODO: cache tracks instead of querying API every time
+      // Also: get all tracks at once?
+      spotApi.getTrack(nextSong)
+        .then((trackRes) => {
+          radio.currentSong = pickTrackProps(trackRes)
+          radio.save((err, savedRadio) => {
             if (err) {
-              // better error handling would be good
-              console.error(err)
-              return
+              console.log(err)
             }
-            listens.forEach((listen) => {
-              if (!clients[listen.userId]) {
+            Listening.find({
+              radioId: savedRadio._id
+            }, (err, listens) => {
+              if (err) {
+                // better error handling would be good
+                console.log(err)
                 return
               }
-              // make sure you reload the client when you restart the server, in order to get the websocket connection back
-              clients[listen.userId].send(JSON.stringify(savedRadio.currentSong))
+              listens.forEach((listen) => {
+                if (!clients[listen.userId]) {
+                  return
+                }
+                // make sure you reload the client when you restart the server, in order to get the websocket connection back
+                clients[listen.userId].send(JSON.stringify(savedRadio.currentSong))
+              })
             })
+            startRadio(savedRadio)
           })
-          startRadio(radio)
         })
-      })
+    })
   }
   return goToNext
 }
